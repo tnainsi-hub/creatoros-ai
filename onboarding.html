@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CreatorOS AI — Setup Profile</title>
+<style>
+  :root{ --bg:#0f0d17; --card:#1a1626; --lilac:#b399ff; --lilac-deep:#7c5cff; --text:#ece8f7; --muted:#9c93b8; --border:#2c2640; }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,'Segoe UI',Roboto,sans-serif; padding:24px; }
+  .wrap{ max-width:420px; margin:0 auto; }
+  h1{ font-size:22px; margin:0 0 4px; }
+  p{ color:var(--muted); font-size:13px; margin:0 0 24px; }
+  label{ font-size:12px; color:var(--muted); display:block; margin:14px 0 6px; }
+  input, select{ width:100%; background:#120f1d; border:1px solid var(--border); border-radius:12px; color:var(--text);
+         padding:13px; font-size:14px; }
+  button{ width:100%; padding:14px; border:none; border-radius:12px; font-size:14px; font-weight:700;
+          background:linear-gradient(90deg,var(--lilac-deep),var(--lilac)); color:#0f0d17; cursor:pointer; margin-top:22px; }
+  .error{ color:#ff8a8a; font-size:12px; margin-top:10px; display:none; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Apna Creator Profile Banao</h1>
+    <p>Yeh info AI ko batayegi tumhare liye scripts kaise banane hain</p>
+
+    <label>Naam</label>
+    <input id="name" placeholder="Nainsi Tiwari">
+
+    <label>Channel / Page Naam</label>
+    <input id="channel" placeholder="Boxy Smile Pop">
+
+    <label>Platform</label>
+    <select id="platform">
+      <option>YouTube</option>
+      <option>Instagram</option>
+      <option>Both</option>
+    </select>
+
+    <label>Niche</label>
+    <input id="niche" placeholder="BTS, Cricket, Cooking...">
+
+    <label>Content Style</label>
+    <select id="style">
+      <option>Emotional</option>
+      <option>News</option>
+      <option>Funny</option>
+      <option>Motivational</option>
+    </select>
+
+    <label>Contact (Email / WhatsApp) — optional</label>
+    <input id="contact" placeholder="Optional">
+
+    <button onclick="save()">Save & Continue</button>
+    <div class="error" id="err">Profile save nahi hua, dobara try karo.</div>
+  </div>
+
+<script>
+const BACKEND_URL = "http://localhost:3000";
+
+async function save(){
+  const email = localStorage.getItem("creatoros_email");
+  const err = document.getElementById("err");
+  err.style.display = "none";
+
+  if(!email){ window.location.href = "login.html"; return; }
+
+  const data = {
+    email,
+    name: document.getElementById("name").value.trim(),
+    channel: document.getElementById("channel").value.trim(),
+    platform: document.getElementById("platform").value,
+    niche: document.getElementById("niche").value.trim(),
+    style: document.getElementById("style").value,
+    contact: document.getElementById("contact").value.trim()
+  };
+
+  if(!data.name || !data.channel || !data.niche){
+    err.textContent = "Naam, channel aur niche bharna zaroori hai.";
+    err.style.display = "block";
+    return;
+  }
+
+  try{
+    const res = await fetch(`${BACKEND_URL}/save-profile`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    if(!res.ok) throw new Error("Server error");
+    window.location.href = "dashboard.html";
+  }catch(e){
+    err.textContent = "Backend se connect nahi ho paya.";
+    err.style.display = "block";
+  }
+}
+</script>
+</body>
+</html>
