@@ -1,9 +1,14 @@
 const express = require("express");
 const cors = require("cors");
-
+const mongoose = require("mongoose");
 const app = express();
 app.use(cors());
 app.use(express.json());
+// MONGODB CONNECTION
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log('Database connected successfully! ✅'))
+  .catch((err) => console.log('Connection failed:', err));
+
 
 // ---- TEMPORARY IN-MEMORY DB ----
 // Phase 2 me ye MongoDB se replace hoga. Abhi server restart hone par data delete ho jayega — yeh normal hai is phase ke liye.
