@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CreatorOS AI</title>
+<style>
+:root{--bg:#0f0d17;--card:#1a1626;--lilac:#b399ff;--lilac-deep:#7c5cff;--text:#ece8f7;--muted:#9c93b8;--border:#2c2640;--gold:#f0c46b;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',Roboto,sans-serif;min-height:100vh;}
+.page{display:none;padding:0 0 60px;}
+.page.active{display:block;}
+.topbar{padding:22px 20px 16px;background:linear-gradient(160deg,#221a3a,#0f0d17 70%);border-bottom:1px solid var(--border);margin-bottom:24px;}
+.eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px;}
+h1{font-size:26px;font-weight:800;background:linear-gradient(90deg,#fff,var(--lilac));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;}
+.sub{color:var(--muted);font-size:13px;margin-top:6px;line-height:1.5;}
+.wrap{padding:0 18px;}
+label{font-size:12px;color:var(--muted);display:block;margin:0 0 7px;font-weight:600;letter-spacing:.05em;}
+input,select,textarea{width:100%;background:#120f1d;border:1.5px solid var(--border);border-radius:14px;color:var(--text);padding:14px;font-size:14px;font-family:inherit;outline:none;transition:border .2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--lilac-deep);}
+textarea{min-height:80px;resize:none;}
+.field-wrap{margin-bottom:16px;}
+.btn{width:100%;padding:15px;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;transition:.2s;}
+.btn-primary{background:linear-gradient(90deg,var(--lilac-deep),var(--lilac));color:#0f0d17;margin-top:8px;}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);margin-top:10px;}
+.btn:active{opacity:.85;transform:scale(.98);}
+.err{color:#ff8a8a;font-size:12px;margin-top:8px;display:none;padding:8px 12px;background:#ff8a8a15;border-radius:8px;}
+.chip{display:inline-block;font-size:12px;background:#241d38;color:var(--lilac);padding:6px 14px;border-radius:999px;margin-bottom:18px;font-weight:600;}
+.script-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;}
+.s-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);font-weight:700;margin-bottom:12px;}
+.manager-card{background:linear-gradient(135deg,#1e1730,#1a1626);border:1px solid var(--lilac-deep);border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;line-height:1.7;color:var(--text);}
+.shot-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--lilac);font-weight:700;margin-bottom:8px;}
+.shot-text{font-size:13.5px;line-height:1.65;white-space:pre-line;color:var(--text);}
+.tabs{display:flex;border-bottom:1px solid var(--border);margin:16px 0 12px;}
+.tab{flex:1;text-align:center;padding:10px 4px;font-size:13px;font-weight:700;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;transition:.2s;}
+.tab.on{color:var(--lilac);border-color:var(--lilac);}
+.panel{display:none;}
+.panel.on{display:block;}
+.field-box{background:#120f1d;border:1.5px solid var(--border);border-radius:12px;padding:13px;margin-bottom:10px;position:relative;}
+.fl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;font-weight:600;}
+.ft{font-size:13.5px;line-height:1.55;color:var(--text);}
+.cbtn{position:absolute;top:10px;right:10px;background:var(--lilac-deep);color:#fff;border:none;border-radius:8px;font-size:10px;padding:5px 10px;font-weight:700;cursor:pointer;}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{font-size:12px;background:#241d38;color:var(--lilac);padding:5px 10px;border-radius:8px;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--lilac);color:#0f0d17;padding:11px 20px;border-radius:999px;font-size:13px;font-weight:800;opacity:0;transition:.25s;pointer-events:none;z-index:99;}
+.toast.show{opacity:1;}
+.divider{height:1px;background:var(--border);margin:20px 0;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="page active" id="p-login">
+  <div class="topbar">
+    <div class="eyebrow">CreatorOS AI · v2</div>
+    <h1>Welcome 💜</h1>
+    <div class="sub">Creator ka AI manager — scripts, captions, hashtags sab ek jagah</div>
+  </div>
+  <div class="wrap">
+    <div class="field-wrap">
+      <label>Email Address</label>
+      <input id="l-email" type="email" placeholder="apna@email.com">
+    </div>
+    <div class="err" id="l-err">Valid email daalo.</div>
+    <button class="btn btn-primary" onclick="doLogin()">Login / Sign Up →</button>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="page" id="p-onboard">
+  <div class="topbar">
+    <div class="eyebrow">Step 1 of 1 · Profile Setup</div>
+    <h1>Apna Creator Profile Banao</h1>
+    <div class="sub">Yeh info AI use karega tumhare liye perfect scripts banane ke liye</div>
+  </div>
+  <div class="wrap">
+    <div class="field-wrap"><label>Tumhara Naam</label><input id="o-name" placeholder="Jaise: Priya Sharma"></div>
+    <div class="field-wrap"><label>Channel / Page Naam</label><input id="o-channel" placeholder="Jaise: Boxy Smile Pop"></div>
+    <div class="field-wrap">
+      <label>Platform</label>
+      <select id="o-platform">
+        <option value="both">YouTube + Instagram (Dono)</option>
+        <option value="youtube">Sirf YouTube</option>
+        <option value="instagram">Sirf Instagram</option>
+        <option value="facebook">Facebook Reels</option>
+        <option value="all">Sab Platforms</option>
+      </select>
+    </div>
+    <div class="field-wrap"><label>Tumhari Niche / Category</label><input id="o-niche" placeholder="Jaise: BTS, Cricket, Cooking, Fashion, Gaming..."></div>
+    <div class="field-wrap">
+      <label>Content Style</label>
+      <select id="o-style">
+        <option value="Emotional">Emotional / Heartfelt</option>
+        <option value="News">News / Breaking</option>
+        <option value="Funny">Funny / Comedy</option>
+        <option value="Motivational">Motivational</option>
+        <option value="Educational">Educational / Facts</option>
+        <option value="Trendy">Trendy / Viral</option>
+      </select>
+    </div>
+    <div class="field-wrap"><label>Language Preference</label>
+      <select id="o-lang">
+        <option value="hinglish">Hinglish (Hindi + English)</option>
+        <option value="hindi">Pure Hindi</option>
+        <option value="english">English</option>
+      </select>
+    </div>
+    <div class="field-wrap"><label>Contact (Optional)</label><input id="o-contact" placeholder="WhatsApp ya Email"></div>
+    <div class="err" id="o-err">Naam, channel aur niche zaroori hain.</div>
+    <button class="btn btn-primary" onclick="doSave()">Profile Save Karo & Dashboard Kholo →</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="page" id="p-dash">
+  <div class="topbar">
+    <div class="eyebrow">CreatorOS AI · Dashboard</div>
+    <h1>Script Lab ✨</h1>
+    <div id="d-chip" class="chip" style="margin-top:10px;">Loading...</div>
+  </div>
+  <div class="wrap">
+    <div class="field-wrap">
+      <label>Aaj ka Topic / News (detail me likho)</label>
+      <textarea id="d-topic" placeholder="Jaise: RM ne 13th anniversary par Army ko emotional message diya, group photo share ki aur likha — Thank you for being with us..."></textarea>
+    </div>
+    <button class="btn btn-primary" onclick="doGen()">✨ Generate 2 Viral Scripts</button>
+    <button class="btn btn-ghost" onclick="goEdit()">⚙️ Profile Edit Karo</button>
+    <button class="btn btn-ghost" onclick="doLogout()">Logout</button>
+    <div id="d-out" style="margin-top:20px;"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Copied!</div>
+
+<script>
+const BACKEND = "https://creatoros-ai.onrender.com";
+
+// ── NAV ──
+function show(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+
+// ── TOAST ──
+function toast(){ const t=document.getElementById('toast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1500); }
+
+// ── COPY ──
+function copy(text){ try{ navigator.clipboard.writeText(text).then(toast).catch(()=>fb(text)); }catch(e){ fb(text); } }
+function fb(t){ const x=document.createElement('textarea'); x.value=t; x.style.cssText='position:fixed;opacity:0'; document.body.appendChild(x); x.focus(); x.select(); try{document.execCommand('copy');toast();}catch(e){} document.body.removeChild(x); }
+
+// ── LOGIN ──
+async function doLogin(){
+  const email=document.getElementById('l-email').value.trim();
+  const err=document.getElementById('l-err');
+  err.style.display='none';
+  if(!email||!email.includes('@')){ err.style.display='block'; return; }
+  localStorage.setItem('cos_email',email);
+  try{
+    const r=await fetch(BACKEND+'/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const u=await r.json();
+    if(u.profileCompleted){ loadDash(); show('p-dash'); } else show('p-onboard');
+  }catch(e){
+    const p=localStorage.getItem('cos_prof');
+    if(p){ loadDash(); show('p-dash'); } else show('p-onboard');
+  }
+}
+
+// ── SAVE PROFILE ──
+async function doSave(){
+  const name=document.getElementById('o-name').value.trim();
+  const channel=document.getElementById('o-channel').value.trim();
+  const niche=document.getElementById('o-niche').value.trim();
+  const err=document.getElementById('o-err');
+  err.style.display='none';
+  if(!name||!channel||!niche){ err.style.display='block'; return; }
+  const prof={name,channel,niche,
+    platform:document.getElementById('o-platform').value,
+    style:document.getElementById('o-style').value,
+    lang:document.getElementById('o-lang').value,
+    contact:document.getElementById('o-contact').value.trim()};
+  localStorage.setItem('cos_prof',JSON.stringify(prof));
+  try{ await fetch(BACKEND+'/save-profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:localStorage.getItem('cos_email'),...prof})}); }catch(e){}
+  loadDash(); show('p-dash');
+}
+
+function loadDash(){
+  const p=JSON.parse(localStorage.getItem('cos_prof')||'{}');
+  const chip=document.getElementById('d-chip');
+  chip.textContent=p.channel ? `${p.channel} · ${p.niche} · ${p.platform==='both'?'YT+IG':p.platform}` : 'Dashboard';
+}
+
+function goEdit(){ show('p-onboard'); }
+function doLogout(){ localStorage.clear(); show('p-login'); }
+
+// ── SCRIPT ENGINE ──
+function getHook(style,niche){
+  const h={
+    Emotional:[`${niche} fans — yeh dekh ke aansu rok nahi paoge 😭💜`,`Is moment ne Army ka dil chura liya 🥹`,`Kabhi socha nahi tha yeh din aayega... 💜`],
+    News:[`BREAKING: ${niche} community me abhi yeh hua 😱`,`Yeh news abhi aayi hai — puri ${niche} duniya shock me hai 🔥`,`Ruk jao — yeh jaanna zaroori hai ⚡`],
+    Funny:[`${niche} fan ka yeh routine too relatable hai 😂`,`Yeh clip dekh ke hasna band nahi hoga 😭😂`,`POV: Tum ek pakke ${niche} fan ho 💀`],
+    Motivational:[`Yeh ek baat tumhari zindagi badal degi ✨`,`Aaj ka din alag hoga — pehle yeh suno 💜`,`Sirf 30 second do — zaroor dekhna tha yeh 🔥`],
+    Educational:[`90% ${niche} fans ko yeh nahi pata tha 😳`,`Yeh fact jaanna zaroori hai 📚`,`Yeh secret ab sabko pata hona chahiye 💡`],
+    Trendy:[`${niche} ka yeh wala trend ab viral ho gaya 🔥`,`Sab isko dekhna chahte hain abhi 👀`,`Is trend me kuch toh khas hai... 💜`]
+  };
+  const arr=h[style]||h.Emotional;
+  return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function getCTA(channel,niche){
+  const c=[
+    `Comment me batao — tumhara reaction kya tha? 💜 Follow @${channel} for daily ${niche} updates!`,
+    `Agar yeh dekh ke dil bhar aaya toh like karo aur apne bestie ko tag karo 👇 Follow for more!`,
+    `Save kar lo isse — baar baar dekhna padega. Follow @${channel} 💜`,
+    `Drop a 💜 comments me agar yeh moment tumhara bhi favourite ban gaya!`
+  ];
+  return c[Math.floor(Math.random()*c.length)];
+}
+
+function getPlatformTags(platform,niche){
+  const nicheTag='#'+niche.replace(/\s+/g,'');
+  const base=['#'+niche.split(' ')[0].replace(/[^a-zA-Z]/g,'')+'Content','#CreatorOS'];
+  if(platform==='youtube'||platform==='both'||platform==='all') return {yt:['BTS','BTS Army',niche,'Kpop news',niche+' 2026',niche+' shorts','viral shorts','trending'].slice(0,8)};
+  return {ig:['#BTS','#BTSArmy','#'+niche.replace(/\s+/g,''),'#KpopNews','#Army','#Trending','#ViralReels','#ContentCreator',nicheTag].slice(0,9)};
+}
+
+function buildScript(topic,prof,v){
+  const {name,channel,niche,style,lang,platform}=prof;
+  const hook=getHook(style,niche);
+  const cta=getCTA(channel,niche);
+  const t=topic||'Aaj ka trending moment';
+
+  const scenes=v===1?`[0-3s] Opening shot — "${t.slice(0,40)}..." bold text screen par aaye
+[3-8s] Context: kya hua, kab, kaha — ek line me clear karo
+[8-18s] Sabse powerful moment / clip / photo — slow zoom ya dramatic reveal
+[18-26s] ${niche} community ka reaction ya tumhara genuine reaction
+[26-32s] Key quote ya strongest line — bada font, center screen`:
+`[0-3s] Black screen — text reveal: "Yeh moment forever yaad rahega..."
+[3-8s] "${t.slice(0,40)}" — context line by line text overlay
+[8-18s] Then vs Now comparison ya Before vs After
+[18-26s] Emotional close — ${name} ka personal connection
+[26-32s] ${channel} watermark + subscribe reminder`;
+
+  const tip=v===1
+    ?`Subah 10 AM pe post karo — ${niche} audience is waqt sabse active hoti hai. Pehle 30 min me har comment ka reply do — algorithm boost milega!`
+    :`Sham 7-8 PM ke liye save karo — ek topic se 2 posts, double reach! Dono ko alag caption do.`;
+
+  const igCaption=`${t} 💜\n\n${niche} fan hone ka matlab yahi hai — har ek moment ko dil se feel karna 🥹\n\n${cta}\n.\n.\n.`;
+  const ytTitle=`${t.slice(0,60)} 😳💜 #shorts`;
+  const ytDesc=`${t}\n\n${cta}\n\n💜 Subscribe: @${channel}\n💜 Daily ${niche} content — har roz naya update!`;
+  const igTags=['#BTS','#BTSArmy','#'+niche.replace(/\s+/g,''),'#KpopNews','#Army','#방탄소년단','#Trending','#ViralReels','#'+channel.replace(/\s+/g,'')].slice(0,9);
+  const ytTags=['BTS','BTS Army',niche,'Kpop',niche+' news 2026','viral shorts','trending','Army',channel].slice(0,9);
+
+  return {hook,scenes,cta,tip,igCaption,igTags,ytTitle,ytDesc,ytTags,platform};
+}
+
+function renderScript(s,idx){
+  const id='s'+idx;
+  const showIG=s.platform!=='youtube';
+  const showYT=s.platform!=='instagram';
+  return `
+<div class="script-card">
+  <div class="s-label">Script ${idx} of 2</div>
+  <div class="manager-card">💜 <b>Manager Tip:</b> ${s.tip}</div>
+  <div class="shot-label">Hook (0-3s)</div>
+  <div class="shot-text" style="margin-bottom:14px;font-weight:700;color:var(--lilac)">${s.hook}</div>
+  <div class="shot-label">Shot Direction (30-35s)</div>
+  <div class="shot-text">${s.scenes}</div>
+  <div class="shot-text" style="margin-top:10px;"><b>CTA:</b> ${s.cta}</div>
+  <div class="tabs">
+    ${showIG?`<div class="tab on" onclick="swTab('ig-${id}','yt-${id}',this)">Instagram</div>`:''}
+    ${showYT?`<div class="tab ${!showIG?'on':''}" onclick="swTab('yt-${id}','ig-${id}',this)">YouTube</div>`:''}
+  </div>
+  ${showIG?`<div class="panel on" id="ig-${id}">
+    <div class="field-box"><div class="fl">Caption</div><button class="cbtn" onclick="copy(document.getElementById('igc${id}').innerText)">Copy</button><div class="ft" id="igc${id}">${s.igCaption}</div></div>
+    <div class="field-box"><div class="fl">Hashtags</div><button class="cbtn" onclick="copy('${s.igTags.join(' ')}')">Copy</button><div class="tags-wrap">${s.igTags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>
+  </div>`:''}
+  ${showYT?`<div class="panel ${!showIG?'on':''}" id="yt-${id}">
+    <div class="field-box"><div class="fl">Title</div><button class="cbtn" onclick="copy(document.getElementById('ytt${id}').innerText)">Copy</button><div class="ft" id="ytt${id}">${s.ytTitle}</div></div>
+    <div class="field-box"><div class="fl">Description</div><button class="cbtn" onclick="copy(document.getElementById('ytd${id}').innerText)">Copy</button><div class="ft" id="ytd${id}">${s.ytDesc}</div></div>
+    <div class="field-box"><div class="fl">Tags</div><button class="cbtn" onclick="copy('${s.ytTags.join(', ')}')">Copy</button><div class="tags-wrap">${s.ytTags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>
+  </div>`:''}
+</div>`;
+}
+
+function swTab(showId,hideId,el){
+  const card=el.closest('.script-card');
+  card.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  card.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  const s=document.getElementById(showId); if(s) s.classList.add('on');
+  el.classList.add('on');
+}
+
+function doGen(){
+  const topic=document.getElementById('d-topic').value.trim();
+  if(!topic){ document.getElementById('d-topic').focus(); return; }
+  const prof=JSON.parse(localStorage.getItem('cos_prof')||'{}');
+  if(!prof.channel){ show('p-onboard'); return; }
+  const s1=buildScript(topic,prof,1);
+  const s2=buildScript(topic,prof,2);
+  const out=document.getElementById('d-out');
+  out.innerHTML=renderScript(s1,1)+renderScript(s2,2);
+  out.scrollIntoView({behavior:'smooth'});
+}
+
+// ── INIT ──
+window.onload=()=>{
+  const email=localStorage.getItem('cos_email');
+  const prof=localStorage.getItem('cos_prof');
+  if(email&&prof){ loadDash(); show('p-dash'); } else show('p-login');
+};
+</script>
+</body>
+</html>
