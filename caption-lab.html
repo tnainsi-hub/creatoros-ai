@@ -72,18 +72,48 @@ Generate Caption
 Generated caption yahan dikhega.
 </div>
 </div>
-
 <script>
 function generateCaption(){
 
-let topic=document.getElementById("topic").value;
+let topic=document.getElementById("topic").value.trim();
 
-document.getElementById("output").innerHTML=
-"🔥 " + topic +
-"<br><br>Don't miss this amazing update! Follow for more. 🚀<br><br>#viral #trending #creatoros";
+if(topic===""){
+document.getElementById("output").innerHTML="⚠️ Pehle topic likho.";
+return;
+}
+
+let captions=[
+
+`🔥 ${topic}
+
+Ye moment sach me discuss karne layak hai. Har kisi ka is par alag reaction hai aur isi wajah se ye itna trend kar raha hai.
+
+Tumhara opinion kya hai? Comment me zaroor batao 👇
+
+#viral #trending #explorepage #creator #contentcreator #reels #instagram #fyp #viralpost #trend`,
+
+`✨ ${topic}
+
+Kabhi kabhi ek choti si update bhi poori community ka attention le leti hai. Ye bhi unhi moments me se ek hai.
+
+Agar tum bhi is topic ko follow karte ho to post save karo aur share karo 🚀
+
+#viralreels #trendingnow #explore #socialmedia #viralcontent #reelitfeelit #instadaily #creatoros #growth`,
+
+`🚀 ${topic}
+
+Internet par abhi isi ki baat ho rahi hai. Log alag alag reactions de rahe hain aur discussion tezi se badh raha hai.
+
+Follow karo daily updates ke liye ❤️
+
+#viral #trendalert #contentcreator #socialmedia #exploremore #reelsinstagram #growthmindset #audience #viralvideo`
+];
+
+let randomCaption=captions[Math.floor(Math.random()*captions.length)];
+
+document.getElementById("output").innerHTML=randomCaption.replace(/\n/g,"<br>");
 
 }
 </script>
-
 </body>
 </html>
