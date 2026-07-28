@@ -1,1 +1,56 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planner — CreatorOS AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-a: #0b0a17; --bg-b: #120e22;
+    --surface: rgba(255,255,255,0.05); --border: rgba(255,255,255,0.09);
+    --text: #eceff5; --muted: #9096a8;
+    --amber: #ffb020; --red: #ff5d6c;
+  --green: #35d68e;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(900px 500px at 90% -8%, rgba(155,107,255,0.16), transparent 60%),
+      radial-gradient(700px 500px at 8% 8%, rgba(41,214,255,0.10), transparent 55%),
+      linear-gradient(180deg, var(--bg-a), var(--bg-b));
+    color: var(--text); min-height:100vh;
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  h1{ font-family:'Space Grotesk',sans-serif; }
+  .card{
+    max-width:420px; width:100%; text-align:center;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:20px; padding:40px 28px;
+  }
+  .icon{
+    width:56px; height:56px; border-radius:16px; margin:0 auto 20px;
+    background:rgba(53,214,142,0.15); color:var(--green);
+    display:flex; align-items:center; justify-content:center; font-size:24px;
+  }
+  h1{ font-size:22px; font-weight:700; margin-bottom:10px; }
+  p{ color:var(--muted); font-size:13.5px; line-height:1.6; margin-bottom:26px; }
+  .back{
+    display:inline-flex; align-items:center; gap:8px;
+    background:linear-gradient(135deg, var(--amber), #ff7a5c);
+    color:#2b1500; text-decoration:none; font-weight:700; font-size:13px;
+    padding:11px 20px; border-radius:11px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">▤</div>
+    <h1>Planner</h1>
+    <p>Daily, weekly &amp; monthly content planning — this module is being built next. It's on the roadmap right after AI Studio goes fully live.</p>
+    <a class="back" href="index.html">← Back to Home</a>
+  </div>
+</body>
+</html>
