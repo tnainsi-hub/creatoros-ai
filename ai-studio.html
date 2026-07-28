@@ -77,6 +77,11 @@ font-size:16px;
 cursor:pointer;
 }
 
+.btn:disabled{
+background:#8fdcff;
+cursor:not-allowed;
+}
+
 .output{
 background:#f8fbfd;
 border:2px dashed #00c2ff;
@@ -91,32 +96,101 @@ text-align:center;
 padding:25px;
 color:#777;
 }
+
+.hidden{
+display:none;
+}
+
+.profile-badge{
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:#eaf9ff;
+border-radius:12px;
+padding:12px 16px;
+margin-bottom:20px;
+font-size:14px;
+}
+
+.profile-badge button{
+background:none;
+border:none;
+color:#0098cc;
+font-weight:bold;
+cursor:pointer;
+font-size:13px;
+}
 </style></head><body><div class="header">
 <div class="logo">CreatorOS AI</div>
-</div><div class="container"><div class="hero">
+</div><div class="container">
+
+<div class="hero">
 <h1>AI Studio 🚀</h1>
 <p>Create Shorts, Reels, Long Videos and Social Media Content.</p>
-</div><div class="card"><label>Topic</label>
-<input type="text" placeholder="Enter your topic...">
+</div>
+
+<!-- PROFILE BADGE — profile complete hone ke baad ye dikhta hai -->
+<div class="profile-badge hidden" id="profileBadge">
+  <span id="profileBadgeText"></span>
+  <button id="editProfileBtn">Edit Profile</button>
+</div>
+
+<!-- PROFILE SETUP CARD — pehli baar khulne par ye dikhta hai -->
+<div class="card" id="profileCard">
+  <h2>Set up your Creator Profile</h2>
+  <p style="color:#6b7280; margin-bottom:15px;">Ye ek hi baar karna hai — isse AI tumhare style ke hisaab se content banayega.</p>
+
+  <label>Email</label>
+  <input type="email" id="emailInput" placeholder="your@email.com">
+
+  <label>Your Name</label>
+  <input type="text" id="nameInput" placeholder="Enter your name">
+
+  <label>Channel / Page Name</label>
+  <input type="text" id="channelInput" placeholder="e.g. TechWithRavi">
+
+  <label>Main Platform</label>
+  <select id="profilePlatformSelect">
+    <option>YouTube</option>
+    <option>Instagram</option>
+    <option>Facebook</option>
+    <option>X (Twitter)</option>
+  </select>
+
+  <label>Niche</label>
+  <input type="text" id="nicheInput" placeholder="e.g. Tech, Fitness, Comedy, Cooking">
+
+  <label>Content Style</label>
+  <input type="text" id="styleInput" placeholder="e.g. Funny, Educational, Motivational">
+
+  <button class="btn" id="saveProfileBtn">Save Profile & Continue</button>
+  <div id="profileError" style="color:#e11d48; margin-top:10px; font-size:13px;"></div>
+</div>
+
+<!-- GENERATE CARD — profile complete hone ke baad hi ye dikhta hai -->
+<div class="card hidden" id="generateCard">
+<label>Topic</label>
+<input type="text" id="topicInput" placeholder="Enter your topic...">
 
 <label>Platform</label>
-<select>
-
+<select id="platformSelect">
 <option>YouTube</option>
 <option>Instagram</option>
 <option>Facebook</option>
 <option>X (Twitter)</option>
-</select><label>Content Type</label>
-<select>
+</select>
 
+<label>Content Type</label>
+<select id="contentTypeSelect">
 <option>YouTube Shorts</option>
 <option>YouTube Long Video</option>
 <option>Instagram Reel</option>
 <option>Facebook Post</option>
 <option>Twitter/X Post</option>
-</select><label>Language</label>
-<select>
+</select>
 
+<label>Language</label>
+<select id="languageSelect">
 <option>English</option>
 <option>Hindi</option>
 <option>Hinglish</option>
@@ -133,25 +207,21 @@ color:#777;
 <option>Japanese</option>
 <option>Korean</option>
 <option>Chinese</option>
-</select><button class="btn">
-Generate Content
-</button></div><div class="card"><h2>Generated Output</h2><div class="output">
+</select>
+
+<button class="btn" id="generateBtn">Generate Content</button>
+</div>
+
+<div class="card hidden" id="outputCard">
+<h2>Generated Output</h2>
+<div class="output" id="outputBox">
 Your AI generated script, caption, hashtags and ideas will appear here.
-</div></div></div><div class="footer">
+</div>
+</div>
+
+</div><div class="footer">
 CreatorOS AI • AI Studio V1
 </div>
-  <script>
-function generateContent(){
-
-let output=document.querySelector(".output");
-
-output.innerHTML =
-"🎬 Sample Script<br><br>" +
-"Hook: Yeh ek demo AI script hai.<br><br>" +
-"Main Content: CreatorOS AI ka AI Studio module successfully kaam kar raha hai.<br><br>" +
-"CTA: Like, Share aur Subscribe karo.";
-
-}
-  </script>
-</div></body>
+  <script src="app.js"></script>
+</body>
 </html>
