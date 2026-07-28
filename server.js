@@ -1,5 +1,5 @@
 // CreatorOS AI — Backend Server
-// Real AI script generation (Gemini) + MongoDB persistence
+// Login + Profile + Real AI content generation (Gemini) + MongoDB persistence
 
 const express = require("express");
 const cors = require("cors");
@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_URL)
   .catch((err) => console.log("Connection failed:", err));
 
 // ---------------------------------------------
-// SCHEMAS — data ab permanently save hoga, server restart pe delete nahi hoga
+// SCHEMAS
 // ---------------------------------------------
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
@@ -29,23 +29,25 @@ const userSchema = new mongoose.Schema({
     platform: String,
     niche: String,
     style: String,
-    contact: String,
   },
   createdAt: { type: Date, default: Date.now },
 });
 
-const scriptSchema = new mongoose.Schema({
+const contentSchema = new mongoose.Schema({
   email: { type: String, required: true },
   topic: String,
-  script: String,
+  platform: String,
+  contentType: String,
+  language: String,
+  output: String,
   createdAt: { type: Date, default: Date.now },
 });
 
 const User = mongoose.model("User", userSchema);
-const Script = mongoose.model("Script", scriptSchema);
+const Content = mongoose.model("Content", contentSchema);
 
 // ---------------------------------------------
-// HEALTH CHECK — Render deploy hua ya nahi, yeh URL khol ke check karo
+// HEALTH CHECK — Render deploy hua ya nahi, ye URL khol ke check karo
 // ---------------------------------------------
 app.get("/", (req, res) => {
   res.json({ status: "CreatorOS AI backend is running ✅" });
@@ -57,12 +59,12 @@ app.get("/", (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email) return res.status(400).json({ error: "Email required" });
+    if (!email || !email.trim()) return res.status(400).json({ error: "Email required" });
 
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: email.trim().toLowerCase() });
 
     if (!user) {
-      user = await User.create({ email });
+      user = await User.create({ email: email.trim().toLowerCase() });
     }
 
     res.json(user);
@@ -76,13 +78,13 @@ app.post("/login", async (req, res) => {
 // ---------------------------------------------
 app.post("/save-profile", async (req, res) => {
   try {
-    const { email, name, channel, platform, niche, style, contact } = req.body;
+    const { email, name, channel, platform, niche, style } = req.body;
     if (!email) return res.status(400).json({ error: "Email required" });
 
     const user = await User.findOneAndUpdate(
-      { email },
+      { email: email.trim().toLowerCase() },
       {
-        profile: { name, channel, platform, niche, style, contact },
+        profile: { name, channel, platform, niche, style },
         profileCompleted: true,
       },
       { new: true }
@@ -97,11 +99,11 @@ app.post("/save-profile", async (req, res) => {
 });
 
 // ---------------------------------------------
-// GET PROFILE — dashboard load hote hi profile dikhane ke liye
+// GET PROFILE — page reload hone par profile wapas load karne ke liye
 // ---------------------------------------------
 app.get("/profile/:email", async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.params.email });
+    const user = await User.findOne({ email: req.params.email.trim().toLowerCase() });
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json(user);
   } catch (err) {
@@ -110,37 +112,44 @@ app.get("/profile/:email", async (req, res) => {
 });
 
 // ---------------------------------------------
-// GENERATE SCRIPT — real AI (Gemini) se, aur history DB me save hoti hai
+// GENERATE — real AI (Gemini) se, profile ke context ke saath
 // ---------------------------------------------
 app.post("/generate", async (req, res) => {
   try {
-    const { email, topic } = req.body;
-    if (!email) return res.status(400).json({ error: "Email required" });
-    if (!topic) return res.status(400).json({ error: "Topic required" });
+    const { email, topic, platform, contentType, language } = req.body;
 
-    const user = await User.findOne({ email });
+    if (!email) return res.status(400).json({ error: "Email required" });
+    if (!topic || !topic.trim()) return res.status(400).json({ error: "Topic required" });
+
+    const user = await User.findOne({ email: email.trim().toLowerCase() });
     if (!user || !user.profileCompleted) {
-      return res.status(400).json({ error: "Profile not completed" });
+      return res.status(400).json({ error: "Profile not completed. Please set up your profile first." });
     }
 
-    const script = await generateScriptWithAI(topic, user.profile);
+    const output = await generateWithAI({ topic, platform, contentType, language, profile: user.profile });
 
-    await Script.create({ email, topic, script });
+    try {
+      await Content.create({ email: user.email, topic, platform, contentType, language, output });
+    } catch (dbErr) {
+      console.log("History save skipped:", dbErr.message);
+    }
 
-    res.json({ script });
+    res.json({ output });
   } catch (err) {
     console.error("Generate error:", err.message);
-    res.status(500).json({ error: "Script generation failed", details: err.message });
+    res.status(500).json({ error: "Generation failed", details: err.message });
   }
 });
 
 // ---------------------------------------------
-// GET SCRIPT HISTORY — user ke pehle generate kiye hue scripts dikhane ke liye
+// SCRIPT HISTORY — user ke pehle generate kiye hue content dekhne ke liye
 // ---------------------------------------------
-app.get("/scripts/:email", async (req, res) => {
+app.get("/history/:email", async (req, res) => {
   try {
-    const scripts = await Script.find({ email: req.params.email }).sort({ createdAt: -1 });
-    res.json(scripts);
+    const items = await Content.find({ email: req.params.email.trim().toLowerCase() })
+      .sort({ createdAt: -1 })
+      .limit(20);
+    res.json(items);
   } catch (err) {
     res.status(500).json({ error: "Fetch failed", details: err.message });
   }
@@ -148,33 +157,36 @@ app.get("/scripts/:email", async (req, res) => {
 
 // ---------------------------------------------
 // REAL AI CALL — Gemini API
-// Free API key yahan se milti hai: https://aistudio.google.com/app/apikey
-// Render/Railway pe environment variable GEMINI_API_KEY set karna hoga
+// Free key: https://aistudio.google.com/app/apikey
 // ---------------------------------------------
-async function generateScriptWithAI(topic, profile) {
-  const { niche, style, channel, name, platform } = profile;
+async function generateWithAI({ topic, platform, contentType, language, profile }) {
+  const { name, channel, niche, style } = profile || {};
 
-  const prompt = `You are CreatorOS AI, a professional content script writer.
-Write a short-form video script (30-40 seconds) for a content creator with these details:
-- Creator name: ${name || "Creator"}
+  const prompt = `You are CreatorOS AI, a professional content generator for creators.
+
+Creator details:
+- Name: ${name || "Creator"}
 - Channel: ${channel || "Not specified"}
-- Platform: ${platform || "Not specified"}
 - Niche: ${niche || "General"}
 - Style/tone: ${style || "General"}
-- Video topic: ${topic}
 
-Structure the script clearly with these labeled sections:
-[0-3s] HOOK — a strong attention-grabbing opening line
-[3-25s] BODY — the main content, 3-4 short beats
-[25-35s] CTA — a call to action matching the creator's channel
+Create content with these details:
+- Platform: ${platform || "YouTube"}
+- Content type: ${contentType || "YouTube Shorts"}
+- Language: ${language || "English"}
+- Topic: ${topic}
 
-Keep it punchy, platform-appropriate, and written in the creator's style. Do not add any extra explanation outside the script.`;
+Write the output in ${language || "English"}, matching the creator's niche and style. Structure it clearly with these sections:
+🎬 SCRIPT — Hook (first 3 seconds), Main content (3-4 short beats), CTA (call to action)
+📝 CAPTION — a ready-to-post caption for this platform
+#️⃣ HASHTAGS — 5-8 relevant hashtags
+
+Keep it punchy and platform-appropriate. Use plain text with clear line breaks, no markdown symbols like ** or ##.`;
 
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    // Fallback agar API key set nahi hai — taaki app crash na ho, testing ke liye
-    return fallbackScript(topic, profile);
+    return fallbackOutput(topic, platform, contentType, profile);
   }
 
   const response = await fetch(
@@ -196,42 +208,29 @@ Keep it punchy, platform-appropriate, and written in the creator's style. Do not
   const data = await response.json();
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
-  if (!text) {
-    return fallbackScript(topic, profile);
-  }
-
-  return text;
+  return text || fallbackOutput(topic, platform, contentType, profile);
 }
 
 // ---------------------------------------------
 // FALLBACK — agar AI key missing/fail ho jaye, tab bhi user ko kuch mile
 // ---------------------------------------------
-function fallbackScript(topic, profile) {
-  const { niche, style, channel, name } = profile;
-  return `🔥 CreatorOS AI — Script (offline mode)
+function fallbackOutput(topic, platform, contentType, profile) {
+  const { channel, niche } = profile || {};
+  return `🎬 SCRIPT (offline mode)
 
-CHANNEL: ${channel || "Your Channel"}
-CREATOR: ${name || "Creator"}
-NICHE: ${niche || "General"}
-STYLE: ${style || "General"}
+Hook: ${topic} ke baare mein ye jaanna zaroori hai!
+Main Content: ${niche || "your niche"} audience ke liye ${contentType || "content"} format mein ${platform || "your platform"} ke liye ${topic} par based content.
+CTA: Follow ${channel || "this channel"} for more ${niche || ""} content!
 
-TOPIC: ${topic}
+📝 CAPTION
+${topic} — ye dekhna mat bhoolna! 🔥
 
-[0-3s] HOOK
-${niche} fans, ${topic} ab trending hai — yeh dekhna zaroori hai!
+#️⃣ HASHTAGS
+#${(topic || "content").replace(/\s+/g, "")} #CreatorOS #ContentCreator
 
-[3-25s] BODY
-Yeh content khaas ${niche} audience ke liye ${style} style me banaya gaya hai.
-- Context dikhao: ${topic}
-- Strongest visual/clip beech me daalo
-- Reaction ya emotion ke saath connect karo
-
-[25-35s] CTA
-Follow ${channel || "this channel"} for more daily ${niche} content 💜
-
-(Note: GEMINI_API_KEY set nahi hai abhi, isliye ye template script hai. Real AI ke liye .env me key add karo.)`;
+(Note: GEMINI_API_KEY set nahi hai ya response nahi mila, isliye ye template output hai.)`;
 }
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`CreatorOS AI running on port ${PORT}`));
-      
+        
