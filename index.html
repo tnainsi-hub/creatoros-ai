@@ -1,228 +1,309 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>CreatorOS AI</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg-a: #0b0a17;
-    --bg-b: #120e22;
-    --surface: rgba(255,255,255,0.05);
-    --surface-hover: rgba(255,255,255,0.09);
-    --border: rgba(255,255,255,0.09);
-    --text: #eceff5;
-    --muted: #9096a8;
-    --muted-dim: #5b6478;
-    --amber: #ffb020;
-    --amber-soft: rgba(255,176,32,0.15);
-    --cyan: #29d6ff;
-    --violet: #9b6bff;
-    --green: #35d68e;
-    --red: #ff5d6c;
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  body{
-    font-family:'Inter',sans-serif;
-    background:
-      radial-gradient(900px 500px at 90% -8%, rgba(155,107,255,0.16), transparent 60%),
-      radial-gradient(700px 500px at 8% 8%, rgba(41,214,255,0.10), transparent 55%),
-      radial-gradient(1000px 700px at 50% 120%, rgba(255,176,32,0.06), transparent 60%),
-      linear-gradient(180deg, var(--bg-a), var(--bg-b));
-    color: var(--text);
-    min-height:100vh;
-    display:flex;
-    padding-bottom: 90px;
-  }
-  h1,h2,h3, .brand{ font-family:'Space Grotesk',sans-serif; }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  /* ---------- Sidebar (desktop) ---------- */
-  .sidebar{
-    width:224px; flex-shrink:0; padding:22px 14px;
-    border-right:1px solid var(--border);
-    display:flex; flex-direction:column;
-    height:100vh; position:sticky; top:0;
-  }
-  .brand{ display:flex; align-items:center; gap:10px; font-size:17px; font-weight:700; padding:0 8px 26px 8px; }
-  .brand-mark{
-    width:28px; height:28px; border-radius:8px;
-    background:linear-gradient(135deg, var(--amber), #ff7a5c);
-    display:flex; align-items:center; justify-content:center;
-    color:#2b1500; font-weight:700; font-size:14px;
-  }
-  nav{ display:flex; flex-direction:column; gap:2px; }
-  .nav-item{
-    display:flex; align-items:center; gap:11px;
-    padding:10px 12px; border-radius:10px;
-    color:var(--muted); font-size:13.5px; font-weight:500;
-    cursor:pointer; transition:.15s;
-  }
-  .nav-item:hover{ background:var(--surface); color:var(--text); }
-  .nav-item.active{ background:var(--amber-soft); color:var(--amber); }
-  .nav-icon{ width:18px; text-align:center; font-size:14px; }
-  .nav-spacer{ flex:1; }
-  .user-card{ display:flex; align-items:center; gap:10px; padding:10px; border-radius:12px; background:var(--surface); border:1px solid var(--border); }
-  .avatar{ width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--cyan),var(--violet)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; }
-  .user-meta{ font-size:12px; line-height:1.4; }
-  .user-meta .name{ font-weight:600; }
-  .user-meta .status{ color:var(--muted); display:flex; align-items:center; gap:5px; }
-  .dot{ width:6px; height:6px; border-radius:50%; background:var(--green); display:inline-block; }
+<link rel="stylesheet" href="style.css">
 
-  /* ---------- Main ---------- */
-  .main{ flex:1; padding:24px 30px; max-width:1300px; min-width:0; }
-  .topbar{ display:flex; align-items:center; gap:14px; margin-bottom:26px; }
-  .search{ flex:1; max-width:400px; background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:10px 14px; color:var(--muted); font-size:13px; }
-  .topbar-icons{ display:flex; gap:9px; margin-left:auto; }
-  .icon-btn{ width:36px; height:36px; border-radius:10px; background:var(--surface); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--muted); position:relative; font-size:14px; }
-  .icon-btn .badge{ position:absolute; top:-4px; right:-4px; width:15px; height:15px; border-radius:50%; background:var(--red); color:#fff; font-size:9px; display:flex; align-items:center; justify-content:center; border:2px solid var(--bg-a); font-weight:700; }
+<script src="https://unpkg.com/lucide@latest"></script>
 
-  .page-head{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; gap:14px; flex-wrap:wrap; }
-  .page-head h1{ font-size:23px; font-weight:700; letter-spacing:-.3px; }
-  .page-head .sub{ color:var(--muted); font-size:13px; margin-top:5px; }
-  .btn-primary{ background:linear-gradient(135deg, var(--amber), #ff7a5c); color:#2b1500; border:none; font-weight:700; font-size:13px; padding:10px 16px; border-radius:11px; cursor:pointer; white-space:nowrap; }
-
-  .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
-  .grid.top-row{ margin-bottom:18px; }
-  .card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:17px; backdrop-filter:blur(6px); }
-  .stat-card .label{ color:var(--muted); font-size:11.5px; font-weight:500; letter-spacing:.4px; text-transform:uppercase; }
-  .stat-card .value{ font-size:27px; font-weight:700; margin-top:7px; font-family:'Space Grotesk',sans-serif; }
-  .stat-card .delta{ font-size:11.5px; color:var(--green); margin-top:4px; }
-
-  .panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-  .panel-head .title{ font-size:11.5px; font-weight:600; letter-spacing:.6px; text-transform:uppercase; color:var(--muted); }
-
-  .module{ display:flex; align-items:flex-start; gap:11px; padding:11px 7px; border-radius:11px; cursor:pointer; transition:.15s; }
-  .module:hover{ background:var(--surface-hover); }
-  .module-icon{ width:34px; height:34px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:15px; }
-  .module-body .name{ font-size:13px; font-weight:600; }
-  .module-body .desc{ font-size:11.5px; color:var(--muted); margin-top:2px; line-height:1.4; }
-  .module-arrow{ margin-left:auto; color:var(--muted-dim); font-size:12.5px; align-self:center; }
-
-  .platform-row{ display:flex; align-items:center; gap:11px; padding:10px 7px; border-radius:11px; }
-  .platform-icon{ width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; flex-shrink:0; }
-  .platform-name{ font-size:13px; font-weight:600; }
-  .platform-status{ font-size:11px; color:var(--muted); margin-top:1px; }
-  .status-pill{ margin-left:auto; font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; }
-  .status-pending{ background:rgba(255,176,32,0.14); color:var(--amber); }
-
-  /* AI Assistant preview panel */
-  .ai-panel{ display:flex; flex-direction:column; height:100%; }
-  .ai-msg{ background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:12px; padding:11px 13px; font-size:12.5px; line-height:1.6; color:var(--muted); margin-bottom:10px; }
-  .ai-chip-row{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px; }
-  .ai-chip{ font-size:11px; padding:6px 11px; border-radius:20px; background:var(--surface); border:1px solid var(--border); color:var(--text); }
-  .ai-input{ margin-top:auto; display:flex; gap:8px; }
-  .ai-input input{ flex:1; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:9px 12px; color:var(--text); font-size:12.5px; }
-  .ai-send{ width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--amber),#ff7a5c); border:none; color:#2b1500; font-weight:700; cursor:pointer; }
-
-  .empty-state{ text-align:center; padding:22px 10px; color:var(--muted); font-size:12px; border:1px dashed var(--border); border-radius:12px; line-height:1.6; }
-
-  /* ---------- Bottom dock (both, but primary nav on mobile) ---------- */
-  .bottom-dock{
-    position:fixed; bottom:18px; left:50%; transform:translateX(calc(-50% + 112px));
-    display:flex; gap:8px;
-    background:rgba(15,12,26,0.85); backdrop-filter:blur(16px);
-    border:1px solid var(--border); border-radius:16px; padding:9px;
-    z-index:50;
-  }
-  .dock-btn{ display:flex; flex-direction:column; align-items:center; gap:4px; padding:7px 14px; border-radius:11px; cursor:pointer; color:var(--muted); font-size:10.5px; font-weight:600; }
-  .dock-btn.primary{ background:linear-gradient(135deg,var(--amber),#ff7a5c); color:#2b1500; }
-  .dock-btn:not(.primary):hover{ background:var(--surface); color:var(--text); }
-  .dock-icon{ font-size:15px; }
-
-  /* ---------- Responsive: mobile ---------- */
-  @media (max-width: 900px){
-    body{ padding-bottom:100px; }
-    .sidebar{ display:none; }
-    .main{ padding:16px 14px; }
-    .grid{ grid-template-columns: 1fr; }
-    .page-head h1{ font-size:19px; }
-    .search{ max-width:none; }
-    .bottom-dock{ left:50%; transform:translateX(-50%); width:calc(100% - 24px); justify-content:space-between; }
-    .dock-btn{ padding:7px 10px; flex:1; }
-  }
-</style>
 </head>
+
 <body>
 
-  <aside class="sidebar">
-    <div class="brand"><div class="brand-mark">C</div>CreatorOS AI</div>
-    <nav>
-      <div class="nav-item active"><span class="nav-icon">⌂</span> Home</div>
-      <div class="nav-item"><span class="nav-icon">✦</span> AI Studio</div>
-      <div class="nav-item"><span class="nav-icon">✎</span> Caption Lab</div>
-      <div class="nav-item"><span class="nav-icon">▣</span> Thumbnail Lab</div>
-      <div class="nav-item"><span class="nav-icon">▤</span> Planner</div>
-      <div class="nav-item"><span class="nav-icon">⚙</span> Settings</div>
-    </nav>
-    <div class="nav-spacer"></div>
-    <div class="user-card">
-      <div class="avatar">TN</div>
-      <div class="user-meta"><div class="name">Your Name</div><div class="status"><span class="dot"></span> Online</div></div>
-    </div>
-  </aside>
+<div class="phone">
 
-  <main class="main">
-    <div class="topbar">
-      <div class="search">🔍 Search scripts, captions, ideas…</div>
-      <div class="topbar-icons">
-        <div class="icon-btn">🔔<span class="badge">3</span></div>
-        <div class="icon-btn">👤</div>
-      </div>
-    </div>
+<!-- TOP BAR -->
 
-    <div class="page-head">
-      <div>
-        <h1>Your Creator Command Center</h1>
-        <div class="sub">Manage YouTube, Instagram, Facebook and X content — all in one place.</div>
-      </div>
-      <button class="btn-primary">+ New Script</button>
-    </div>
+<header class="topbar">
 
-    <div class="grid top-row">
-      <div class="card stat-card"><div class="label">Total Scripts</div><div class="value">0</div><div class="delta">Start your first script →</div></div>
-      <div class="card stat-card"><div class="label">Saved Content</div><div class="value">0</div><div class="delta">Nothing saved yet</div></div>
-      <div class="card stat-card"><div class="label">Languages Supported</div><div class="value">15+</div><div class="delta" style="color:var(--cyan)">Write in your language</div></div>
-    </div>
+<div class="logo">
 
-    <div class="grid">
-      <div class="card panel">
-        <div class="panel-head"><div class="title">CreatorOS Modules</div></div>
-        <div class="module"><div class="module-icon" style="background:rgba(255,176,32,0.15); color:var(--amber);">✦</div><div class="module-body"><div class="name">AI Studio</div><div class="desc">Shorts, long-video, reels & story scripts</div></div><div class="module-arrow">→</div></div>
-        <div class="module"><div class="module-icon" style="background:rgba(41,214,255,0.15); color:var(--cyan);">✎</div><div class="module-body"><div class="name">Caption Lab</div><div class="desc">Captions & descriptions for every platform</div></div><div class="module-arrow">→</div></div>
-        <div class="module"><div class="module-icon" style="background:rgba(255,93,108,0.15); color:var(--red);">▣</div><div class="module-body"><div class="name">Thumbnail Lab</div><div class="desc">Thumbnail text, ideas & prompts</div></div><div class="module-arrow">→</div></div>
-        <div class="module"><div class="module-icon" style="background:rgba(53,214,142,0.15); color:var(--green);">▤</div><div class="module-body"><div class="name">Planner</div><div class="desc">Daily, weekly & monthly content planning</div></div><div class="module-arrow">→</div></div>
-      </div>
+<h2>CreatorOS AI</h2>
 
-      <div class="card panel">
-        <div class="panel-head"><div class="title">Connected Platforms</div></div>
-        <div class="platform-row"><div class="platform-icon" style="background:#ff0000;">▶</div><div><div class="platform-name">YouTube</div><div class="platform-status">Not connected</div></div><div class="status-pill status-pending">Connect</div></div>
-        <div class="platform-row"><div class="platform-icon" style="background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af);">◎</div><div><div class="platform-name">Instagram</div><div class="platform-status">Not connected</div></div><div class="status-pill status-pending">Connect</div></div>
-        <div class="platform-row"><div class="platform-icon" style="background:#000000;">𝕏</div><div><div class="platform-name">X</div><div class="platform-status">Not connected</div></div><div class="status-pill status-pending">Connect</div></div>
-        <div class="platform-row"><div class="platform-icon" style="background:#1877f2;">f</div><div><div class="platform-name">Facebook</div><div class="platform-status">Not connected</div></div><div class="status-pill status-pending">Connect</div></div>
-      </div>
+</div>
 
-      <div class="card panel ai-panel">
-        <div class="panel-head"><div class="title">AI Assistant</div></div>
-        <div class="ai-msg">Hi! Tell me what you're creating today and I'll suggest hooks, topics or a full script.</div>
-        <div class="ai-chip-row">
-          <div class="ai-chip">🎣 Video hooks</div>
-          <div class="ai-chip">🔥 Trending topics</div>
-          <div class="ai-chip">📝 Content ideas</div>
-        </div>
-        <div class="ai-input"><input type="text" placeholder="Ask CreatorOS AI…" disabled><button class="ai-send">→</button></div>
-      </div>
-    </div>
-  </main>
+<div class="top-icons">
 
-  <div class="bottom-dock">
-    <div class="dock-btn primary"><span class="dock-icon">+</span>New</div>
-    <div class="dock-btn"><span class="dock-icon">✦</span>Studio</div>
-    <div class="dock-btn"><span class="dock-icon">▤</span>Planner</div>
-    <div class="dock-btn"><span class="dock-icon">🔔</span>Alerts</div>
-    <div class="dock-btn"><span class="dock-icon">👤</span>Profile</div>
-  </div>
+<button class="icon-btn">
+
+<i data-lucide="bell"></i>
+
+</button>
+
+<button class="icon-btn">
+
+<i data-lucide="user-circle"></i>
+
+</button>
+
+</div>
+
+</header>
+
+<!-- GREETING -->
+
+<section class="welcome">
+
+<p id="greeting">Good Morning</p>
+
+<h1 id="username">Welcome Back!</h1>
+
+</section>
+
+<!-- SEARCH -->
+
+<section class="search-box">
+
+<input
+type="text"
+placeholder="Search projects, AI tools...">
+
+<button>
+
+<i data-lucide="search"></i>
+
+</button>
+
+</section>
+
+<!-- QUICK ACTIONS -->
+
+<section class="quick-actions">
+
+<div class="action-card">
+
+<i data-lucide="sparkles"></i>
+
+<span>AI Studio</span>
+
+</div>
+
+<div class="action-card">
+
+<i data-lucide="calendar"></i>
+
+<span>Planner</span>
+
+</div>
+
+<div class="action-card">
+
+<i data-lucide="image"></i>
+
+<span>Thumbnail</span>
+
+</div>
+
+<div class="action-card">
+
+<i data-lucide="captions"></i>
+
+<span>Caption</span>
+
+</div>
+
+</section>
+
+<!-- AI ASSISTANT -->
+
+<section class="assistant">
+
+<div class="assistant-header">
+
+<h3>AI Assistant</h3>
+
+<span>Online</span>
+
+</div>
+
+<p>
+
+Good Morning!
+
+Let's build something amazing today.
+
+</p>
+
+<button>
+
+Ask AI
+
+</button>
+
+</section>
+
+<!-- TODAY TASKS -->
+
+<section class="tasks">
+
+<h3>Today's Tasks</h3>
+
+<div class="task">
+
+<input type="checkbox">
+
+Create Script
+
+</div>
+
+<div class="task">
+
+<input type="checkbox">
+
+Design Thumbnail
+
+</div>
+
+<div class="task">
+
+<input type="checkbox">
+
+Upload Video
+
+</div>
+
+</section>
+
+<!-- TRENDING -->
+
+<section class="trending">
+
+<h3>Trending</h3>
+
+<div class="trend-card">
+
+🔥 AI Video Editing
+
+</div>
+
+<div class="trend-card">
+
+🔥 Shorts Strategy
+
+</div>
+
+<div class="trend-card">
+
+🔥 Instagram Algorithm
+
+</div>
+
+</section>
+
+<!-- HEALTH -->
+
+<section class="health">
+
+<h3>Creator Health</h3>
+
+<p>
+
+💧 Drink Water
+
+</p>
+
+<p>
+
+😴 Sleep Properly
+
+</p>
+
+<p>
+
+❤️ Great Job Today!
+
+</p>
+
+</section>
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+<a href="#">
+
+<i data-lucide="house"></i>
+
+<p>Home</p>
+
+</a>
+
+<a href="#">
+
+<i data-lucide="folder-open"></i>
+
+<p>Projects</p>
+
+</a>
+
+<a href="#" class="center">
+
+<i data-lucide="plus"></i>
+
+</a>
+
+<a href="#">
+
+<i data-lucide="sparkles"></i>
+
+<p>AI</p>
+
+</a>
+
+<a href="#">
+
+<i data-lucide="user"></i>
+
+<p>Profile</p>
+
+</a>
+
+</nav>
+
+</div>
+
+<script>
+
+lucide.createIcons();
+
+const hour=new Date().getHours();
+
+let greeting="";
+
+if(hour<12){
+
+greeting="🌞 Good Morning";
+
+}
+
+else if(hour<17){
+
+greeting="☀️ Good Afternoon";
+
+}
+
+else if(hour<20){
+
+greeting="🌇 Good Evening";
+
+}
+
+else{
+
+greeting="🌙 Good Night";
+
+}
+
+document.getElementById("greeting").innerText=greeting;
+
+</script>
 
 </body>
 </html>
