@@ -18,7 +18,230 @@
 <body>
 
 <div class="phone">
+<!-- SEARCH -->
 
+<section class="search-box">
+
+<input
+type="text"
+placeholder="Search projects, AI tools..."
+>
+
+<button>
+<i data-lucide="search"></i>
+</button>
+
+</section>
+
+
+
+<!-- QUICK ACTIONS -->
+
+<section class="quick-actions">
+
+<div class="action-card">
+
+<i data-lucide="sparkles"></i>
+
+<span>AI Studio</span>
+
+</div>
+
+
+
+<div class="action-card">
+
+<i data-lucide="plus-circle"></i>
+
+<span>New Project</span>
+
+</div>
+
+
+
+<div class="action-card">
+
+<i data-lucide="bar-chart-3"></i>
+
+<span>Analytics</span>
+
+</div>
+
+
+
+<div class="action-card">
+
+<i data-lucide="folder-open"></i>
+
+<span>Assets</span>
+
+</div>
+
+</section>
+
+
+
+<!-- AI ASSISTANT -->
+
+<section class="assistant">
+
+<div class="assistant-header">
+
+<h3>CreatorOS Assistant</h3>
+
+<span>● Online</span>
+
+</div>
+
+<p>
+
+Good Morning 👋
+
+I'm ready to help you build, manage and grow your content today.
+
+</p>
+
+<button>
+
+Open AI Assistant
+
+</button>
+
+</section>
+
+
+
+<!-- TODAY TASK -->
+
+<section class="tasks">
+
+<h3>Today's Tasks</h3>
+
+<div class="task">
+
+<input type="checkbox">
+
+<span>Create New Script</span>
+
+</div>
+
+<div class="task">
+
+<input type="checkbox">
+
+<span>Design Thumbnail</span>
+
+</div>
+
+<div class="task">
+
+<input type="checkbox">
+
+<span>Upload Video</span>
+
+</div>
+
+</section>
+
+
+
+<!-- TRENDING -->
+
+<section class="trending">
+
+<h3>Trending Topics</h3>
+
+<div class="trend-card">
+
+🔥 AI Tools
+
+</div>
+
+<div class="trend-card">
+
+🎬 YouTube Shorts
+
+</div>
+
+<div class="trend-card">
+
+📱 Instagram Reels
+
+</div>
+
+</section>
+
+
+
+<!-- HEALTH -->
+
+<section class="health">
+
+<h3>Health Reminder ❤️</h3>
+
+<p>
+
+You've been working for a long time.
+
+Take a 5 minute break.
+
+</p>
+
+</section>
+
+
+
+<!-- BOTTOM NAVIGATION -->
+
+<nav class="bottom-nav">
+
+<a href="#">
+
+<i data-lucide="house"></i>
+
+Home
+
+</a>
+
+
+
+<a href="#">
+
+<i data-lucide="folder"></i>
+
+Projects
+
+</a>
+
+
+
+<a class="center" href="#">
+
++
+
+</a>
+
+
+
+<a href="#">
+
+<i data-lucide="sparkles"></i>
+
+AI
+
+</a>
+
+
+
+<a href="#">
+
+<i data-lucide="user"></i>
+
+Profile
+
+</a>
+
+</nav>
 <!-- TOP BAR -->
 
 <header class="topbar">
@@ -304,6 +527,8 @@ greeting="🌙 Good Night";
 document.getElementById("greeting").innerText=greeting;
 
 </script>
-
+<script>
+lucide.createIcons();
+</script>
 </body>
 </html>
