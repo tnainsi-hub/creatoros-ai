@@ -1,7 +1,10 @@
 // CreatorOS Global JavaScript
-// Profile setup + AI Studio generate — dono ko real backend se jodta hai
+// Profile setup + AI Studio generate — Render Backend Sync
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Real Render Backend URL
+  const API_BASE_URL = "https://creatoros-ai.onrender.com";
+
   const profileCard = document.getElementById("profileCard");
   const generateCard = document.getElementById("generateCard");
   const outputCard = document.getElementById("outputCard");
@@ -38,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function checkExistingProfile(email) {
     try {
-      const res = await fetch(`/profile/${encodeURIComponent(email)}`);
+      const res = await fetch(`${API_BASE_URL}/profile/${encodeURIComponent(email)}`);
       if (!res.ok) throw new Error("not found");
       const user = await res.json();
 
@@ -86,14 +89,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       // Step 1: login (naya user banega agar pehli baar hai)
-      await fetch("/login", {
+      await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 
       // Step 2: profile save
-      const res = await fetch("/save-profile", {
+      const res = await fetch(`${API_BASE_URL}/save-profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, name, channel, platform, niche, style }),
@@ -151,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
       outputBox.innerHTML = "⏳ AI content generate kar rahi hai...";
 
       try {
-        const response = await fetch("/generate", {
+        const response = await fetch(`${API_BASE_URL}/generate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -181,4 +184,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-// CreatorOS Global JavaScript
