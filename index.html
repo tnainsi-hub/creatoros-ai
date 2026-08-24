@@ -1,446 +1,274 @@
-    <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>CreatorOS AI</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="style.css">
-
-<script src="https://unpkg.com/lucide@latest"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreatorOS AI - Dashboard</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brandDark: '#08090d',
+            cardDark: '#0f1320',
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      background-color: #08090d;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glossy-card {
+      background: linear-gradient(135deg, rgba(20, 24, 38, 0.85) 0%, rgba(12, 15, 25, 0.95) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+  </style>
 </head>
-
-<body>
-
-<div class="phone">
-<!-- SEARCH -->
-
-<section class="search-box">
-
-<input
-type="text"
-placeholder="Search projects, AI tools..."
->
-
-<button>
-<i data-lucide="search"></i>
-</button>
-
-</section>
-
-
-
-<!-- QUICK ACTIONS -->
-
-<section class="quick-actions">
-
-<div class="action-card">
-
-<i data-lucide="sparkles"></i>
-
-<span>AI Studio</span>
-
-</div>
-
-
-
-<div class="action-card">
-
-<i data-lucide="plus-circle"></i>
-
-<span>New Project</span>
-
-</div>
-
-
-
-<div class="action-card">
-
-<i data-lucide="bar-chart-3"></i>
-
-<span>Analytics</span>
-
-</div>
-
-
-
-<div class="action-card">
-
-<i data-lucide="folder-open"></i>
-
-<span>Assets</span>
-
-</div>
-
-</section>
-
-
-
-<!-- AI ASSISTANT -->
-
-<section class="assistant">
-
-<div class="assistant-header">
-
-<h3>CreatorOS Assistant</h3>
-
-<span>● Online</span>
-
-</div>
-
-<p>
-
-Good Morning 👋
-
-I'm ready to help you build, manage and grow your content today.
-
-</p>
-
-<button>
-
-Open AI Assistant
-
-</button>
-
-</section>
-
-
-
-<!-- TODAY TASK -->
-
-<section class="tasks">
-
-<h3>Today's Tasks</h3>
-
-<div class="task">
-
-<input type="checkbox">
-
-<span>Create New Script</span>
-
-</div>
-
-<div class="task">
-
-<input type="checkbox">
-
-<span>Design Thumbnail</span>
-
-</div>
-
-<div class="task">
-
-<input type="checkbox">
-
-<span>Upload Video</span>
-
-</div>
-
-</section>
-
-
-
-<!-- TRENDING -->
-
-<section class="trending">
-
-<h3>Trending Topics</h3>
-
-<div class="trend-card">
-
-🔥 AI Tools
-
-</div>
-<!-- TOP BAR -->
-
-<header class="topbar">
-
-<div class="logo">
-
-<h2>CreatorOS AI</h2>
-
-</div>
-
-<div class="top-icons">
-
-<button class="icon-btn">
-
-<i data-lucide="bell"></i>
-
-</button>
-
-<button class="icon-btn">
-
-<i data-lucide="user-circle"></i>
-
-</button>
-
-</div>
-
-</header>
-
-<!-- GREETING -->
-
-<section class="welcome">
-
-<p id="greeting">Good Morning</p>
-
-<h1 id="username">Welcome Back!</h1>
-
-</section>
-
-<!-- SEARCH -->
-
-<section class="search-box">
-
-<input
-type="text"
-placeholder="Search projects, AI tools...">
-
-<button>
-
-<i data-lucide="search"></i>
-
-</button>
-
-</section>
-
-<!-- QUICK ACTIONS -->
-
-<section class="quick-actions">
-
-<div class="action-card">
-
-<i data-lucide="sparkles"></i>
-
-<span>AI Studio</span>
-
-</div>
-
-<div class="action-card">
-
-<i data-lucide="calendar"></i>
-
-<span>Planner</span>
-
-</div>
-
-<div class="action-card">
-
-<i data-lucide="image"></i>
-
-<span>Thumbnail</span>
-
-</div>
-
-<div class="action-card">
-
-<i data-lucide="captions"></i>
-
-<span>Caption</span>
-
-</div>
-
-</section>
-
-<!-- AI ASSISTANT -->
-
-<section class="assistant">
-
-<div class="assistant-header">
-
-<h3>AI Assistant</h3>
-
-<span>Online</span>
-
-</div>
-
-<p>
-
-Good Morning!
-
-Let's build something amazing today.
-
-</p>
-
-<button>
-
-Ask AI
-
-</button>
-
-</section>
-
-<!-- TODAY TASKS -->
-
-<section class="tasks">
-
-<h3>Today's Tasks</h3>
-
-<div class="task">
-
-<input type="checkbox">
-
-Create Script
-
-</div>
-
-<div class="task">
-
-<input type="checkbox">
-
-Design Thumbnail
-
-</div>
-
-<div class="task">
-
-<input type="checkbox">
-
-Upload Video
-
-</div>
-
-</section>
-
-<!-- TRENDING -->
-
-<section class="trending">
-
-<h3>Trending</h3>
-
-<div class="trend-card">
-
-🔥 AI Video Editing
-
-</div>
-
-<div class="trend-card">
-
-🔥 Shorts Strategy
-
-</div>
-
-<div class="trend-card">
-
-🔥 Instagram Algorithm
-
-</div>
-
-</section>
-
-<!-- HEALTH -->
-
-<section class="health">
-
-<h3>Creator Health</h3>
-
-<p>
-
-💧 Drink Water
-
-</p>
-
-<p>
-
-😴 Sleep Properly
-
-</p>
-
-<p>
-
-❤️ Great Job Today!
-
-</p>
-
-</section>
-
-<!-- BOTTOM NAV -->
-
-<nav class="bottom-nav">
-
-<a href="#">
-
-<i data-lucide="house"></i>
-
-<p>Home</p>
-
-</a>
-
-<a href="#">
-
-<i data-lucide="folder-open"></i>
-
-<p>Projects</p>
-
-</a>
-
-<a href="#" class="center">
-
-<i data-lucide="plus"></i>
-
-</a>
-
-<a href="#">
-
-<i data-lucide="sparkles"></i>
-
-<p>AI</p>
-
-</a>
-
-<a href="#">
-
-<i data-lucide="user"></i>
-
-<p>Profile</p>
-
-</a>
-
-</nav>
-
-</div>
-
-<script>
-
-lucide.createIcons();
-
-const hour=new Date().getHours();
-
-let greeting="";
-
-if(hour<12){
-
-greeting="🌞 Good Morning";
-
-}
-
-else if(hour<17){
-
-greeting="☀️ Good Afternoon";
-
-}
-
-else if(hour<20){
-
-greeting="🌇 Good Evening";
-
-}
-
-else{
-
-greeting="🌙 Good Night";
-
-}
-
-document.getElementById("greeting").innerText=greeting;
-
-</script>
-    <script src="app.js"></script>
+<body class="bg-[#08090d] min-h-screen pb-24 selection:bg-amber-500/30">
+
+  <!-- TOP BAR -->
+  <header class="sticky top-0 z-40 bg-[#08090d]/80 backdrop-blur-md border-b border-white/10 px-4 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500/20 to-purple-600/30 border border-amber-400/30 flex items-center justify-center">
+        <svg viewBox="0 0 48 48" fill="none" class="w-5 h-5">
+          <path d="M24 4L41.3205 14V34L24 44L6.67949 34V14L24 4Z" stroke="#f59e0b" stroke-width="3.5" stroke-linejoin="round"/>
+          <circle cx="24" cy="24" r="3.5" fill="#f59e0b"/>
+        </svg>
+      </div>
+      <div>
+        <h2 id="userNameHeader" class="text-sm font-extrabold text-white tracking-tight">CreatorOS AI</h2>
+        <p id="userHandleHeader" class="text-[10px] text-amber-400 font-mono">@TechWithTanu</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition">
+        <i data-lucide="bell" class="w-4 h-4"></i>
+      </button>
+      <a href="login.html" class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition">
+        <i data-lucide="user-circle" class="w-4 h-4"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-xl mx-auto p-4 space-y-6">
+
+    <!-- GREETING -->
+    <section class="pt-2">
+      <p id="greeting" class="text-xs font-semibold text-amber-400 tracking-wider uppercase mb-0.5">Good Morning</p>
+      <h1 class="text-2xl font-extrabold text-white tracking-tight">Welcome Back, <span id="displayName">Tanu</span>! 👋</h1>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="relative">
+      <input 
+        type="text" 
+        placeholder="Search projects, AI tools..." 
+        class="w-full pl-11 pr-12 py-3 rounded-2xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 transition"
+      >
+      <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+        <i data-lucide="search" class="w-4 h-4"></i>
+      </div>
+      <button class="absolute inset-y-1.5 right-1.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition flex items-center justify-center">
+        <i data-lucide="search" class="w-4 h-4"></i>
+      </button>
+    </section>
+
+    <!-- QUICK ACTIONS -->
+    <section class="grid grid-cols-4 gap-3">
+      <div class="glossy-card p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-amber-400/50 transition group">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-2 group-hover:scale-110 transition">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+        </div>
+        <span class="text-xs font-semibold text-slate-200">AI Studio</span>
+      </div>
+
+      <div class="glossy-card p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-purple-400/50 transition group">
+        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-2 group-hover:scale-110 transition">
+          <i data-lucide="calendar" class="w-5 h-5"></i>
+        </div>
+        <span class="text-xs font-semibold text-slate-200">Planner</span>
+      </div>
+
+      <div class="glossy-card p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-blue-400/50 transition group">
+        <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-2 group-hover:scale-110 transition">
+          <i data-lucide="image" class="w-5 h-5"></i>
+        </div>
+        <span class="text-xs font-semibold text-slate-200">Thumbnail</span>
+      </div>
+
+      <div class="glossy-card p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-emerald-400/50 transition group">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-2 group-hover:scale-110 transition">
+          <i data-lucide="captions" class="w-5 h-5"></i>
+        </div>
+        <span class="text-xs font-semibold text-slate-200">Caption</span>
+      </div>
+    </section>
+
+    <!-- AI ASSISTANT BOX -->
+    <section class="glossy-card rounded-3xl p-5 relative overflow-hidden">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
+          <h3 class="text-sm font-bold text-white">AI Talent Manager</h3>
+        </div>
+        <span class="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-semibold">Online</span>
+      </div>
+      <p id="aiChatReply" class="text-xs text-slate-300 leading-relaxed mb-4">
+        Ready to optimize your content strategy? Ask me for 3 viral video hooks, title ideas, or a brand deal pitch!
+      </p>
+      <div class="flex gap-2">
+        <input type="text" id="aiQueryInput" placeholder="Ask AI manager anything..." class="flex-1 bg-black/40 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
+        <button onclick="askAIManger()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:opacity-9 text-slate-950 font-extrabold text-xs rounded-xl transition">
+          Ask AI
+        </button>
+      </div>
+    </section>
+
+    <!-- TODAY TASKS -->
+    <section class="glossy-card rounded-3xl p-5 space-y-3">
+      <h3 class="text-sm font-bold text-white flex items-center justify-between">
+        <span>Today's Tasks</span>
+        <span class="text-[10px] text-amber-400 font-normal">3 pending</span>
+      </h3>
+      <div class="space-y-2">
+        <label class="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.02] border border-white/5 cursor-pointer hover:bg-white/[0.05] transition">
+          <input type="checkbox" class="rounded accent-amber-500 w-4 h-4">
+          <span class="text-xs font-medium text-slate-200">Record 3s hook for next AI tutorial</span>
+        </label>
+        <label class="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.02] border border-white/5 cursor-pointer hover:bg-white/[0.05] transition">
+          <input type="checkbox" class="rounded accent-amber-500 w-4 h-4">
+          <span class="text-xs font-medium text-slate-200">Design high-CTR thumbnail</span>
+        </label>
+        <label class="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.02] border border-white/5 cursor-pointer hover:bg-white/[0.05] transition">
+          <input type="checkbox" class="rounded accent-amber-500 w-4 h-4">
+          <span class="text-xs font-medium text-slate-200">Schedule upload at 7:30 PM</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- TRENDING -->
+    <section>
+      <h3 class="text-sm font-bold text-white mb-3">Trending in your Niche</h3>
+      <div class="grid grid-cols-3 gap-2.5">
+        <div class="glossy-card p-3 rounded-2xl text-center">
+          <span class="text-[10px] text-amber-400 font-bold block mb-1">🔥 HOT</span>
+          <p class="text-xs font-semibold text-slate-200 truncate">AI Video Editing</p>
+        </div>
+        <div class="glossy-card p-3 rounded-2xl text-center">
+          <span class="text-[10px] text-purple-400 font-bold block mb-1">📈 TREND</span>
+          <p class="text-xs font-semibold text-slate-200 truncate">Shorts Strategy</p>
+        </div>
+        <div class="glossy-card p-3 rounded-2xl text-center">
+          <span class="text-[10px] text-emerald-400 font-bold block mb-1">💡 IDEA</span>
+          <p class="text-xs font-semibold text-slate-200 truncate">Algorithm 2026</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="fixed bottom-0 left-0 right-0 max-w-xl mx-auto bg-[#0f1320]/90 backdrop-blur-xl border-t border-white/10 px-6 py-2.5 flex items-center justify-between z-50">
+    <a href="dashboard.html" class="flex flex-col items-center gap-1 text-amber-400">
+      <i data-lucide="home" class="w-5 h-5"></i>
+      <span class="text-[10px] font-semibold">Home</span>
+    </a>
+    <a href="#" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+      <i data-lucide="folder-open" class="w-5 h-5"></i>
+      <span class="text-[10px] font-semibold">Projects</span>
+    </a>
+    <a href="#" class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 to-purple-600 flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/20 -mt-5">
+      <i data-lucide="plus" class="w-6 h-6 stroke-[3]"></i>
+    </a>
+    <a href="#" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+      <i data-lucide="sparkles" class="w-5 h-5"></i>
+      <span class="text-[10px] font-semibold">AI</span>
+    </a>
+    <a href="login.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition">
+      <i data-lucide="user" class="w-5 h-5"></i>
+      <span class="text-[10px] font-semibold">Profile</span>
+    </a>
+  </nav>
+
+  <script>
+    lucide.createIcons();
+
+    // Load User Session
+    let creatorContext = { name: "Tanu Sharma", handle: "@TechWithTanu", niche: "AI & Tech" };
+    try {
+      const saved = localStorage.getItem('creatorOS_user');
+      if (saved) {
+        const user = JSON.parse(saved);
+        if (user.name) {
+          document.getElementById('displayName').innerText = user.name.split(' ')[0];
+          document.getElementById('userNameHeader').innerText = user.name;
+          creatorContext.name = user.name;
+        }
+        if (user.channelId) {
+          document.getElementById('userHandleHeader').innerText = user.channelId;
+          creatorContext.handle = user.channelId;
+        }
+        if (user.niche) {
+          creatorContext.niche = user.niche;
+        }
+      }
+    } catch(e) {}
+
+    // Dynamic Greeting
+    const hour = new Date().getHours();
+    let greeting = "🌞 Good Morning";
+    if (hour >= 12 && hour < 17) greeting = "☀️ Good Afternoon";
+    else if (hour >= 17 && hour < 20) greeting = "🌇 Good Evening";
+    else if (hour >= 20) greeting = "🌙 Good Night";
+    document.getElementById("greeting").innerText = greeting;
+
+    // AI Manager Chat Function
+    async function askAIManger() {
+      const input = document.getElementById('aiQueryInput');
+      const replyBox = document.getElementById('aiChatReply');
+      const query = input.value.trim();
+      if (!query) return;
+
+      replyBox.innerHTML = '<span class="text-amber-400 animate-pulse">AI Manager is thinking...</span>';
+      input.value = '';
+
+      try {
+        const res = await fetch('/api/ai-manager-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: query, creatorContext })
+        });
+        const data = await res.json();
+        replyBox.innerText = data.reply || "Focus on high-retention 3s hooks!";
+      } catch (err) {
+        replyBox.innerText = "[AI Manager]: Focus on high-retention 3s hooks and post at 7:30 PM!";
+      }
+    }
+  </script>
 </body>
 </html>
