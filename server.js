@@ -75,8 +75,9 @@ app.post('/api/ai-manager-chat', async (req, res) => {
 // Routes
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`CreatorOS Server running on port ${PORT}`);
+  printMsg = `CreatorOS Server running on port ${PORT}`;
+  console.log(printMsg);
 });
