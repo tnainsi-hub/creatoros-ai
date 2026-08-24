@@ -49,22 +49,23 @@ app.post('/api/ai-manager-chat', async (req, res) => {
   const name = creatorContext?.name || currentCreatorSession.name || "Tanu";
   const niche = creatorContext?.niche || currentCreatorSession.niche || "AI & Tech";
 
-  const ai = getGeminiClient();
-  if (!ai) {
-    return res.json({
-      reply: `[AI Manager for ${name}]: Tactical advice for ${channel}: Focus on high-retention 3s hooks and schedule your upload at 7:30 PM.`,
-      suggestions: ["Write 3 viral hooks", "Draft brand deal pitch", "Repurpose for Instagram & X"]
-    });
-  }
-
   try {
+    const ai = getGeminiClient();
+    if (!ai) {
+      return res.json({
+        reply: `[AI Manager for ${name}]: Tactical advice for ${channel}: Focus on high-retention 3s hooks and schedule your upload at 7:30 PM.`,
+        suggestions: ["Write 3 viral hooks", "Draft brand deal pitch", "Repurpose for Instagram & X"]
+      });
+    }
+
     const prompt = `You are the 24/7 AI Talent Manager on CreatorOS AI managing ${name} (${channel}, Niche: ${niche}). Provide sharp, actionable creator advice for: "${message}"`;
     const response = await ai.models.generateContent({
-      model: "gemini-flash-latest",
+      model: "gemini-2.5-flash",
       contents: prompt
     });
     res.json({ reply: response.text });
   } catch (err) {
+    console.error("Gemini API Error:", err.message);
     res.json({
       reply: `[AI Manager for ${name}]: Tactical advice for ${channel}: Focus on high-retention 3s hooks and schedule your upload at 7:30 PM.`
     });
@@ -77,7 +78,5 @@ app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`CreatorOS Server running on http://localhost:${PORT}`);
-  console.log(`- Login page: http://localhost:${PORT}/login.html`);
-  console.log(`- Dashboard page: http://localhost:${PORT}/dashboard.html`);
+  console.log(`CreatorOS Server running on port ${PORT}`);
 });
