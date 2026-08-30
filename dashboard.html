@@ -1,334 +1,288 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CreatorOS AI - Dynamic Dashboard</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-          },
-          colors: {
-            brandDark: '#08090d',
-            cardDark: '#0f1320',
-          }
-        }
-      }
-    }
-  </script>
-  
-  <style>
-    body {
-      background-color: #08090d;
-      color: #f1f5f9;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    
-    .glossy-card {
-      background: linear-gradient(135deg, rgba(20, 24, 38, 0.85) 0%, rgba(12, 15, 25, 0.95) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menezo — Dashboard</title>
+<meta name="description" content="Your Menezo creator dashboard — tasks, AI insights, and platform growth in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0710; --sidebar:#0d0a17; --card:#14101f; --card2:#1a1428;
+    --line:rgba(255,255,255,.08); --text:#f3f0fa; --sub:#9791ab;
+    --grad: linear-gradient(135deg,#7c3aed 0%,#ec4899 55%,#f59e0b 100%);
+    --good:#4ade80;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background: radial-gradient(circle at 15% 0%, #170e2c 0%, #0a0710 55%);
+    font-family:'Inter',sans-serif; color:var(--text); min-height:100vh;
+  }
+  .app{ display:flex; min-height:100vh; }
+
+  aside{
+    width:236px; flex:0 0 auto; background:var(--sidebar); border-right:1px solid var(--line);
+    padding:18px 14px; display:flex; flex-direction:column; position:sticky; top:0; height:100vh; overflow-y:auto;
+  }
+  .brand{ display:flex; align-items:center; gap:9px; padding:4px 6px 20px; }
+  .logo{ width:30px; height:30px; border-radius:9px; background:var(--grad); flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center; font-family:'Sora'; font-weight:800; font-size:15px; }
+  .brand-txt div:first-child{ font-family:'Sora'; font-weight:700; font-size:15px; }
+  .brand-txt div:last-child{ font-size:9px; color:var(--sub); letter-spacing:.08em; text-transform:uppercase; }
+
+  .sec-label{ font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--sub); padding:14px 8px 6px; }
+  nav a, .plat-item{
+    display:flex; align-items:center; gap:9px; padding:8px 9px; border-radius:10px; margin-bottom:2px;
+    font-size:13px; font-weight:500; color:#cfc9de; cursor:pointer; text-decoration:none; border:1px solid transparent;
+  }
+  nav a:hover, .plat-item:hover{ background:rgba(255,255,255,.04); }
+  .dash-link.active{ background:var(--grad); color:#fff; font-weight:600; }
+  .plat-item.connected{ background:linear-gradient(90deg, rgba(124,58,237,.16), rgba(236,73,153,.06)); border-color:rgba(124,58,237,.3); color:#fff; }
+  .plat-item.locked{ opacity:.45; cursor:default; }
+  .icon-badge{ width:21px; height:21px; border-radius:6px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; font-size:11px; }
+  .plat-count{ margin-left:auto; font-size:10px; color:var(--sub); font-weight:600; }
+  .plat-item.connected .plat-count{ color:#e9d8ff; }
+
+  .yt{background:#ff3b3b1a;color:#ff5b5b;} .ig{background:linear-gradient(135deg,#f9ce341a,#ee2a7b1a);color:#ee2a7b;}
+  .tt{background:#25f4ee1a;color:#25f4ee;} .fb{background:#1877f21a;color:#4996ff;}
+  .xx{background:#ffffff14;color:#e5e5e5;} .li{background:#0a66c21a;color:#3d9dff;} .pn{background:#e600231a;color:#ff5c72;}
+
+  .pro-card{ margin-top:auto; background:var(--card); border:1px solid rgba(245,158,11,.25); border-radius:14px;
+    padding:13px; font-size:11px; color:var(--sub); line-height:1.5; }
+  .pro-card b{ color:#fbbf24; display:flex; align-items:center; gap:6px; font-size:12px; margin-bottom:4px; }
+
+  main{ flex:1; padding:20px 26px 40px; max-width:1180px; }
+  .topbar{ display:flex; align-items:center; gap:14px; margin-bottom:20px; }
+  .search{ flex:1; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 14px; color:var(--sub); font-size:13px; }
+  .avatar{ width:34px; height:34px; border-radius:50%; background:var(--grad); display:flex; align-items:center; justify-content:center;
+    font-family:'Sora'; font-weight:700; font-size:13px; cursor:pointer; }
+  .switch-link{ font-size:11px; color:var(--sub); text-decoration:none; margin-left:6px; }
+
+  .hero{ margin-bottom:20px; }
+  .hero h1{ font-family:'Sora'; font-size:22px; font-weight:700; }
+  .hero p{ color:var(--sub); font-size:13px; margin-top:4px; }
+
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px; }
+  .stat{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; }
+  .stat .lbl{ font-size:11px; color:var(--sub); margin-bottom:6px; }
+  .stat .num{ font-family:'Sora'; font-weight:700; font-size:21px; }
+  .stat .delta{ font-size:11px; color:var(--good); font-weight:600; margin-top:4px; }
+
+  .section-title{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .section-title h2{ font-size:14px; font-weight:700; }
+
+  .bottom-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:16px; margin-bottom:16px; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; }
+  .card h3{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--sub); margin-bottom:12px; }
+
+  .task{ display:flex; align-items:center; justify-content:space-between; padding:9px 11px; border-radius:10px;
+    background:var(--card2); margin-bottom:7px; font-size:12.5px; cursor:pointer; }
+  .task.done{ opacity:.5; text-decoration:line-through; }
+  .task .time{ color:var(--sub); font-size:11px; text-decoration:none; }
+  .addtask{ display:flex; gap:8px; margin-top:8px; }
+  .addtask input{ flex:1; background:var(--card2); border:1px solid var(--line); border-radius:10px; padding:8px 10px; color:var(--text); font-size:12px; }
+  .addtask button{ background:var(--grad); border:none; border-radius:10px; padding:0 14px; color:#fff; font-weight:700; cursor:pointer; }
+
+  .chat-log{ max-height:150px; overflow-y:auto; margin-bottom:10px; }
+  .msg{ font-size:12px; padding:8px 10px; border-radius:10px; margin-bottom:6px; line-height:1.5; }
+  .msg.ai{ background:var(--card2); color:#d8d2ea; }
+  .msg.user{ background:rgba(124,58,237,.18); color:#e9d8ff; margin-left:20px; text-align:right; }
+  .chat-input{ display:flex; gap:8px; }
+  .chat-input input{ flex:1; background:var(--card2); border:1px solid var(--line); border-radius:10px; padding:9px 11px; color:var(--text); font-size:12px; }
+  .chat-input button{ background:var(--grad); border:none; border-radius:10px; padding:0 14px; color:#fff; font-weight:700; cursor:pointer; }
+
+  .locked-note{ font-size:11.5px; color:var(--sub); text-align:center; padding:10px 0 0; }
+  .locked-note b{ color:var(--text); }
+
+  @media (max-width:900px){
+    aside{ display:none; }
+    .stat-row{ grid-template-columns:1fr; }
+    .bottom-grid{ grid-template-columns:1fr; }
+  }
+</style>
 </head>
-<body class="bg-[#08090d] min-h-screen text-slate-100 flex justify-center selection:bg-amber-500/30">
+<body>
 
-  <!-- Mobile Container -->
-  <div class="w-full max-w-[430px] min-h-screen bg-[#0b0d12] relative flex flex-col pb-24 border-x border-white/[0.06] shadow-2xl">
-    
-    <!-- Top Status Bar Mockup -->
-    <div class="sticky top-0 z-50 bg-[#0b0d12]/95 backdrop-blur-md flex items-center justify-between px-6 pt-3.5 pb-1 text-xs font-semibold text-slate-300 select-none">
-      <span class="font-extrabold tracking-tight text-white">9:41</span>
-      <div class="flex items-center gap-2 text-slate-300">
-        <i data-lucide="signal" class="w-3.5 h-3.5"></i>
-        <i data-lucide="wifi" class="w-3.5 h-3.5"></i>
-        <div class="w-5 h-2.5 rounded-[4px] border border-slate-300 p-0.5 flex items-center">
-          <div class="h-full w-full bg-slate-100 rounded-[2px]"></div>
-        </div>
-      </div>
+<div class="app">
+  <aside>
+    <div class="brand">
+      <div class="logo">M</div>
+      <div class="brand-txt"><div>Menezo</div><div>Create · Build · Grow</div></div>
     </div>
 
-    <!-- Header Navigation -->
-    <header class="sticky top-7 z-40 bg-[#0b0d12]/90 backdrop-blur-md px-4 py-2.5 border-b border-white/[0.06] flex items-center justify-between">
-      <a href="login.html" title="Switch User / Channel" class="w-9 h-9 rounded-xl bg-[#141824] border border-white/[0.08] flex items-center justify-center text-slate-300 hover:text-white transition">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-      </a>
+    <nav><a class="dash-link active" href="dashboard.html">🏠&nbsp; Dashboard</a></nav>
 
-      <div class="flex items-center gap-2">
-        <span class="text-xs font-bold tracking-tight text-white">CreatorOS <span class="text-amber-400">AI</span></span>
-      </div>
+    <div class="sec-label">Platforms</div>
+    <div id="platList"></div>
 
-      <div class="flex items-center gap-2">
-        <a href="login.html" class="w-8 h-8 rounded-full overflow-hidden ring-1 ring-amber-400/50" title="Account Details">
-          <img id="headerUserAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" class="w-full h-full object-cover"/>
-        </a>
-      </div>
-    </header>
-
-    <!-- Dynamic Logged-in Channel Bar -->
-    <div class="px-4 py-2 bg-[#0e121e] border-b border-white/[0.06] flex items-center justify-between text-xs">
-      <div class="flex items-center gap-2">
-        <span id="platformBadge" class="px-2 py-0.5 rounded-md bg-red-500/20 text-red-400 border border-red-500/30 text-[10px] font-bold">YouTube</span>
-        <span id="displayChannelId" class="font-bold text-white truncate max-w-[150px]">@TechWithTanu</span>
-        <span id="displayFollowersBadge" class="text-[10px] text-purple-400 font-mono">(125K)</span>
-      </div>
-      <a href="login.html" class="text-[11px] text-slate-400 hover:text-amber-400 font-medium flex items-center gap-1">
-        <i data-lucide="log-out" class="w-3 h-3"></i> Switch
-      </a>
-    </div>
-
-    <!-- MAIN DASHBOARD -->
-    <main class="px-4 py-4 space-y-4 flex-1 overflow-y-auto">
-      
-      <!-- GREETING & STATS -->
-      <section class="glossy-card rounded-2xl p-4 relative overflow-hidden">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <h2 class="text-base font-bold text-white tracking-tight">
-              Good evening, <span id="displayCreatorName" class="text-amber-400">Tanu</span> 👋
-            </h2>
-            <p class="text-xs text-slate-400 mt-0.5">
-              Target niche: <span id="displayNiche" class="text-slate-200 font-medium">AI & Tech Tutorials</span>
-            </p>
-          </div>
-
-          <div class="relative flex items-center justify-center w-12 h-12">
-            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-              <path class="text-slate-800" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <path id="progressCircle" class="text-amber-400 transition-all duration-700" stroke-dasharray="75, 100" stroke-width="3" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            </svg>
-            <span id="progressText" class="absolute text-[10px] font-extrabold text-white">75%</span>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 pt-3 border-t border-white/[0.06] text-center">
-          <div class="bg-[#121624]/60 p-2 rounded-xl border border-white/[0.04]">
-            <div class="text-[10px] text-slate-400">Audience</div>
-            <div id="statFollowers" class="text-xs font-bold text-white mt-0.5">125K</div>
-            <div class="text-[9px] text-emerald-400 font-semibold">+14.2%</div>
-          </div>
-          <div class="bg-[#121624]/60 p-2 rounded-xl border border-white/[0.04]">
-            <div class="text-[10px] text-slate-400">Engagement</div>
-            <div class="text-xs font-bold text-white mt-0.5">8.7%</div>
-            <div class="text-[9px] text-emerald-400 font-semibold">High affinity</div>
-          </div>
-          <div class="bg-[#121624]/60 p-2 rounded-xl border border-white/[0.04]">
-            <div class="text-[10px] text-slate-400">Health Score</div>
-            <div id="statScore" class="text-xs font-bold text-amber-400 mt-0.5">88/100</div>
-            <div class="text-[9px] text-purple-300 font-semibold">Viral Ready</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TODAY'S FOCUS -->
-      <section class="glossy-card rounded-2xl p-4">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="text-xs font-bold text-white uppercase tracking-wider">Today's Focus</h3>
-          <button onclick="promptNewTask()" class="text-[11px] text-amber-400 font-semibold flex items-center gap-1 hover:underline">
-            <i data-lucide="plus" class="w-3 h-3"></i> Add Task
-          </button>
-        </div>
-        <div id="tasksList" class="space-y-2"></div>
-      </section>
-
-      <!-- AI MANAGER LIVE CHAT -->
-      <section class="glossy-card rounded-2xl p-4 border border-purple-500/30">
-        <div class="flex items-center justify-between mb-2.5">
-          <div class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-lg bg-purple-600/30 text-purple-300 flex items-center justify-center">
-              <i data-lucide="bot" class="w-3.5 h-3.5"></i>
-            </div>
-            <div>
-              <h3 class="text-xs font-bold text-white">24/7 AI Talent Manager</h3>
-              <p class="text-[10px] text-slate-400">Channel optimization & viral hooks</p>
-            </div>
-          </div>
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        </div>
-
-        <div id="chatHistory" class="bg-[#0b0e17] rounded-xl p-3 max-h-48 overflow-y-auto space-y-2.5 text-xs mb-3 border border-white/[0.04]">
-          <div class="bg-purple-950/40 border border-purple-800/40 p-2.5 rounded-xl text-purple-200">
-            <p class="font-semibold text-white mb-1">🤖 Manager Advice for <span class="text-amber-300" id="chatChannelName">@TechWithTanu</span>:</p>
-            <p id="managerWelcomeMsg">Upload peak window is 07:30 PM today. Let me know if you want 3 viral hooks or brand deal pitch emails!</p>
-          </div>
-        </div>
-
-        <form onsubmit="handleChatSubmit(event)" class="flex gap-2">
-          <input 
-            type="text" 
-            id="chatInput" 
-            placeholder="Ask your AI Manager anything..."
-            class="flex-1 px-3 py-2 rounded-xl bg-[#0b0e17] border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-purple-400 transition"
-          />
-          <button 
-            type="submit" 
-            id="chatSendBtn"
-            class="px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition"
-          >
-            <i data-lucide="send" class="w-3.5 h-3.5"></i>
-          </button>
-        </form>
-      </section>
-
-    </main>
-
-    <!-- Bottom App Navigation Dock -->
-    <nav class="fixed bottom-0 w-full max-w-[430px] bg-[#0c0f1a]/95 backdrop-blur-lg border-t border-white/[0.08] px-6 py-2.5 flex items-center justify-between z-50">
-      <a href="dashboard.html" class="flex flex-col items-center gap-1 text-amber-400">
-        <i data-lucide="layout-grid" class="w-4 h-4"></i>
-        <span class="text-[9px] font-bold">Home</span>
-      </a>
-      <a href="login.html" class="w-10 h-10 -mt-5 rounded-2xl bg-gradient-to-tr from-amber-500 to-purple-600 flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/30 hover:scale-105 transition" title="Switch Channel">
-        <i data-lucide="plus" class="w-5 h-5 stroke-[2.5]"></i>
-      </a>
-      <a href="login.html" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white" title="Account">
-        <i data-lucide="user" class="w-4 h-4"></i>
-        <span class="text-[9px] font-medium">Profile</span>
-      </a>
+    <div class="sec-label">Tools</div>
+    <nav>
+      <a href="ai-studio.html">✨ AI Studio</a>
+      <a href="planner.html">📅 Planner</a>
+      <a href="caption-lab.html">🖼️ Caption Lab</a>
+      <a href="analytics.html">📊 Analytics</a>
     </nav>
 
-  </div>
+    <div class="pro-card">
+      <b>👑 Menezo Pro</b>
+      Connect more platforms and unlock advanced AI tools.
+    </div>
+  </aside>
 
-  <script>
-    let currentUser = {
-      name: 'Tanu Sharma',
-      channelId: '@TechWithTanu',
-      platform: 'YouTube',
-      niche: 'AI & Tech Tutorials',
-      followers: '125K',
-      score: 88,
-    };
+  <main>
+    <div class="topbar">
+      <input class="search" placeholder="Search tools, projects, scripts...">
+      <div class="avatar" id="avatarInitial" onclick="switchAccount()" title="Switch account">M</div>
+    </div>
 
-    let tasks = [
-      { id: '1', title: 'Record 60s Shorts: Top 3 Free AI Tools 2026', time: '11:00 AM', completed: true },
-      { id: '2', title: 'Review & Send Notion Sponsorship Contract ($2,800)', time: '02:30 PM', completed: true },
-      { id: '3', title: 'Reply to top 15 comments on latest video for retention', time: '04:00 PM', completed: true },
-      { id: '4', title: 'Schedule 07:30 PM YouTube upload with high CTR thumbnail', time: '07:30 PM', completed: false }
-    ];
+    <div class="hero">
+      <h1>Good <span id="greetTime">Evening</span>, <span id="displayName">Creator</span>! 👋 <a class="switch-link" href="login.html">(switch)</a></h1>
+      <p><span id="displayHandle">@you</span> · <span id="displayPlatform">YouTube</span> · <span id="displayNiche">General</span></p>
+    </div>
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedUserStr = localStorage.getItem('creatorOS_user');
-      if (savedUserStr) {
-        try {
-          currentUser = JSON.parse(savedUserStr);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-      renderUserInfo();
-      renderTasks();
-      lucide.createIcons();
-    });
+    <div class="stat-row">
+      <div class="stat"><div class="lbl">Followers</div><div class="num" id="statFollowers">0</div><div class="delta">On <span id="statPlatform">—</span></div></div>
+      <div class="stat"><div class="lbl">Creator Score</div><div class="num" id="statScore">78</div><div class="delta">↑ Building momentum</div></div>
+      <div class="stat"><div class="lbl">Tasks Today</div><div class="num" id="statTasks">0</div><div class="delta" id="statTasksDone">0 done</div></div>
+    </div>
 
-    function renderUserInfo() {
-      const firstName = currentUser.name.split(' ')[0] || 'Creator';
-      document.getElementById('displayCreatorName').innerText = firstName;
-      document.getElementById('displayChannelId').innerText = currentUser.channelId;
-      document.getElementById('chatChannelName').innerText = currentUser.channelId;
-      document.getElementById('displayFollowersBadge').innerText = '(' + (currentUser.followers || '125K') + ')';
-      document.getElementById('statFollowers').innerText = currentUser.followers || '125K';
-      document.getElementById('displayNiche').innerText = currentUser.niche || 'Tech & AI';
-      
-      const badge = document.getElementById('platformBadge');
-      badge.innerText = currentUser.platform || 'YouTube';
+    <div class="bottom-grid">
+      <div class="card">
+        <h3>Today's Focus</h3>
+        <div id="taskList"></div>
+        <div class="addtask">
+          <input type="text" id="newTaskInput" placeholder="Add a task...">
+          <button onclick="addTask()">Add</button>
+        </div>
+      </div>
 
-      document.getElementById('managerWelcomeMsg').innerText = 'I am analyzing ' + currentUser.channelId + ' (' + currentUser.niche + '). Peak upload time is 07:30 PM. How can I assist you today?';
-    }
+      <div class="card">
+        <h3>🤖 AI Talent Manager</h3>
+        <div class="chat-log" id="chatLog"></div>
+        <div class="chat-input">
+          <input type="text" id="chatInput" placeholder="Ask your AI manager anything..." onkeydown="if(event.key==='Enter')sendChat()">
+          <button onclick="sendChat()">Ask</button>
+        </div>
+      </div>
+    </div>
 
-    function renderTasks() {
-      const container = document.getElementById('tasksList');
-      container.innerHTML = '';
-      let completedCount = 0;
+    <p class="locked-note">Want <b>all your platforms</b> in one view? Connect more from the sidebar as you grow.</p>
+  </main>
+</div>
 
-      tasks.forEach(t => {
-        if (t.completed) completedCount++;
-        const el = document.createElement('div');
-        el.className = 'p-2.5 rounded-xl border flex items-center justify-between cursor-pointer transition ' + (t.completed ? 'bg-[#101422]/60 border-white/[0.04] text-slate-400' : 'bg-[#14192a] border-purple-500/30 text-white');
-        el.onclick = () => toggleTask(t.id);
-        el.innerHTML = '<div class="flex items-center gap-2.5"><div class="w-4 h-4 rounded-md border flex items-center justify-center ' + (t.completed ? 'bg-amber-400 border-amber-400 text-slate-950' : 'border-slate-500') + '">' + (t.completed ? '<i data-lucide="check" class="w-3 h-3 stroke-[3]"></i>' : '') + '</div><span class="text-xs ' + (t.completed ? 'line-through text-slate-400' : 'font-medium') + '">' + t.title + '</span></div><span class="text-[10px] text-slate-500">' + t.time + '</span>';
-        container.appendChild(el);
+<script>
+  const allPlatforms = [
+    { key:'YouTube', cls:'yt', icon:'▶' },
+    { key:'Instagram', cls:'ig', icon:'◎' },
+    { key:'TikTok', cls:'tt', icon:'♪' },
+    { key:'Facebook', cls:'fb', icon:'f' },
+    { key:'X', cls:'xx', icon:'✕' },
+    { key:'LinkedIn', cls:'li', icon:'in' },
+    { key:'Pinterest', cls:'pn', icon:'📌' },
+  ];
+
+  let user = { name:'Creator', channelId:'@you', platform:'YouTube', niche:'General', followers:'0', score:78 };
+  try {
+    const saved = localStorage.getItem('menezo_user');
+    if (saved) user = { ...user, ...JSON.parse(saved) };
+  } catch(e){}
+
+  // If nobody logged in yet, send to login
+  if (!localStorage.getItem('menezo_user')) {
+    window.location.href = 'login.html';
+  }
+
+  function renderSidebarPlatforms(){
+    const wrap = document.getElementById('platList');
+    wrap.innerHTML = allPlatforms.map(p => {
+      const connected = p.key === user.platform;
+      return `<div class="plat-item ${connected ? 'connected' : 'locked'}">
+        <span class="icon-badge ${p.cls}">${p.icon}</span>${p.key}
+        ${connected ? `<span class="plat-count">${user.followers}</span>` : `<span class="plat-count">Connect</span>`}
+      </div>`;
+    }).join('');
+  }
+
+  function renderProfile(){
+    const first = (user.name || 'Creator').split(' ')[0];
+    document.getElementById('displayName').textContent = first;
+    document.getElementById('avatarInitial').textContent = first.charAt(0).toUpperCase();
+    document.getElementById('displayHandle').textContent = user.channelId;
+    document.getElementById('displayPlatform').textContent = user.platform;
+    document.getElementById('displayNiche').textContent = user.niche;
+    document.getElementById('statFollowers').textContent = user.followers;
+    document.getElementById('statPlatform').textContent = user.platform;
+    document.getElementById('statScore').textContent = user.score || 78;
+
+    const hour = new Date().getHours();
+    let g = 'Morning';
+    if (hour >= 12 && hour < 17) g = 'Afternoon';
+    else if (hour >= 17 && hour < 21) g = 'Evening';
+    else if (hour >= 21 || hour < 5) g = 'Night';
+    document.getElementById('greetTime').textContent = g;
+  }
+
+  // ===== Tasks =====
+  let tasks = JSON.parse(localStorage.getItem('menezo_tasks') || 'null') || [
+    { text:'Finish today\'s script', done:false },
+    { text:'Reply to top comments', done:false },
+    { text:'Plan next upload', done:false },
+  ];
+  function saveTasks(){ localStorage.setItem('menezo_tasks', JSON.stringify(tasks)); renderTasks(); }
+  function renderTasks(){
+    const wrap = document.getElementById('taskList');
+    wrap.innerHTML = tasks.map((t,i) => `
+      <div class="task ${t.done?'done':''}" onclick="toggleTask(${i})">
+        <span>${t.text}</span><span class="time">${t.done?'✓':''}</span>
+      </div>`).join('');
+    document.getElementById('statTasks').textContent = tasks.length;
+    document.getElementById('statTasksDone').textContent = tasks.filter(t=>t.done).length + ' done';
+  }
+  function toggleTask(i){ tasks[i].done = !tasks[i].done; saveTasks(); }
+  function addTask(){
+    const input = document.getElementById('newTaskInput');
+    const v = input.value.trim();
+    if (!v) return;
+    tasks.push({ text:v, done:false });
+    input.value = '';
+    saveTasks();
+  }
+
+  // ===== AI Chat =====
+  function appendMsg(role, text){
+    const log = document.getElementById('chatLog');
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+    div.textContent = text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+  }
+  async function sendChat(){
+    const input = document.getElementById('chatInput');
+    const msg = input.value.trim();
+    if (!msg) return;
+    appendMsg('user', msg);
+    input.value = '';
+    try {
+      const res = await fetch('/api/ai-manager-chat', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ message: msg, creatorContext:{ name:user.name, handle:user.channelId, platform:user.platform, niche:user.niche } })
       });
-
-      const percent = Math.round((completedCount / tasks.length) * 100) || 0;
-      document.getElementById('progressText').innerText = percent + '%';
-      document.getElementById('progressCircle').setAttribute('stroke-dasharray', percent + ', 100');
-      lucide.createIcons();
+      const data = await res.json();
+      appendMsg('ai', data.reply || 'Focus on high-retention hooks and post consistently!');
+    } catch(err){
+      appendMsg('ai', 'Focus on high-retention hooks and post consistently!');
     }
+  }
 
-    function toggleTask(id) {
-      tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-      renderTasks();
-    }
+  function switchAccount(){ window.location.href = 'login.html'; }
 
-    function promptNewTask() {
-      const taskText = prompt("Enter new creator task:");
-      if (taskText && taskText.trim()) {
-        tasks.push({ id: Date.now().toString(), title: taskText.trim(), time: 'Today', completed: false });
-        renderTasks();
-      }
-    }
+  renderSidebarPlatforms();
+  renderProfile();
+  renderTasks();
+  appendMsg('ai', `Hi ${user.name.split(' ')[0]}! I'm analyzing ${user.channelId} on ${user.platform}. Ask me for hooks, captions, or a content plan.`);
+</script>
 
-    async function handleChatSubmit(e) {
-      if (e) e.preventDefault();
-      const input = document.getElementById('chatInput');
-      const msg = input.value.trim();
-      if (!msg) return;
-
-      input.value = '';
-      appendChatMessage('user', msg);
-
-      try {
-        const res = await fetch('/api/ai-manager-chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: msg,
-            creatorContext: {
-              name: currentUser.name,
-              handle: currentUser.channelId,
-              platform: currentUser.platform,
-              niche: currentUser.niche,
-            }
-          })
-        });
-        const data = await res.json();
-        appendChatMessage('ai', data.reply || 'Strategy updated for your channel!');
-      } catch (err) {
-        appendChatMessage('ai', '[Manager]: Got it for ' + currentUser.channelId + '! Focus on 3s visual retention hooks.');
-      }
-    }
-
-    function appendChatMessage(sender, text) {
-      const history = document.getElementById('chatHistory');
-      const bubble = document.createElement('div');
-      if (sender === 'user') {
-        bubble.className = "bg-purple-600/30 border border-purple-500/30 p-2 rounded-xl text-right text-purple-100 text-xs ml-6";
-        bubble.innerText = text;
-      } else {
-        bubble.className = "bg-[#141928] border border-white/10 p-2.5 rounded-xl text-left text-slate-200 text-xs mr-4 whitespace-pre-line";
-        bubble.innerHTML = '<strong class="text-amber-400">🤖 AI Manager:</strong>\n' + text;
-      }
-      history.appendChild(bubble);
-      history.scrollTop = history.scrollHeight;
-    }
-  </script>
 </body>
 </html>
