@@ -1,280 +1,165 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - CreatorOS AI SaaS</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-          },
-          colors: {
-            brandDark: '#08090d',
-            cardDark: '#0f1320',
-          }
-        }
-      }
-    }
-  </script>
-  
-  <style>
-    body {
-      background-color: #08090d;
-      color: #f1f5f9;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    
-    .glossy-card {
-      background: linear-gradient(135deg, rgba(20, 24, 38, 0.85) 0%, rgba(12, 15, 25, 0.95) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-    
-    .glow-purple {
-      box-shadow: 0 0 40px -10px rgba(147, 51, 234, 0.35);
-    }
-  </style>
-</head>
-<body class="bg-[#08090d] min-h-screen flex items-center justify-center p-4 selection:bg-amber-500/30">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menezo — Connect Your Channel</title>
+<meta name="description" content="Sign in to Menezo, your AI creator manager.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0710; --card:#14101f; --card2:#1a1428; --line:rgba(255,255,255,.08);
+    --text:#f3f0fa; --sub:#9791ab;
+    --grad: linear-gradient(135deg,#7c3aed 0%,#ec4899 55%,#f59e0b 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background: radial-gradient(circle at 30% 0%, #1a1030 0%, #0a0710 55%);
+    font-family:'Inter',sans-serif; color:var(--text);
+    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 16px;
+  }
+  .wrap{ width:100%; max-width:430px; }
+  .brand{ text-align:center; margin-bottom:22px; }
+  .logo{ width:56px; height:56px; border-radius:16px; background:var(--grad); margin:0 auto 12px;
+    display:flex; align-items:center; justify-content:center; font-family:'Sora'; font-weight:800; font-size:26px;
+    box-shadow: 0 10px 30px -6px rgba(124,58,237,.6); }
+  .brand h1{ font-family:'Sora'; font-weight:800; font-size:24px; }
+  .brand p{ font-size:12.5px; color:var(--sub); margin-top:5px; }
 
-  <!-- Background decorative glow -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-amber-500/10 rounded-full blur-[100px]"></div>
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:22px; padding:22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5); backdrop-filter: blur(16px); }
+
+  .quickfill{ background:var(--card2); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:18px; }
+  .quickfill-label{ font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:#c4b5fd; margin-bottom:8px; }
+  .qf-row{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .qf-btn{ background:rgba(124,58,237,.12); border:1px solid rgba(124,58,237,.3); color:#e9d8ff;
+    border-radius:10px; padding:8px 10px; font-size:11.5px; font-weight:600; cursor:pointer; text-align:left; }
+
+  label{ display:block; font-size:12px; font-weight:600; color:#cfc9de; margin-bottom:6px; }
+  input, select{
+    width:100%; background:#0c0916; border:1px solid var(--line); border-radius:12px;
+    padding:11px 13px; color:var(--text); font-size:13.5px; margin-bottom:14px;
+  }
+  input:focus, select:focus{ outline:none; border-color:#7c3aed; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+  .submit{ width:100%; padding:13px; border:none; border-radius:12px; background:var(--grad);
+    color:#fff; font-family:'Sora'; font-weight:700; font-size:14px; cursor:pointer; margin-top:4px; }
+  .submit:disabled{ opacity:.7; }
+
+  .note{ text-align:center; font-size:11px; color:var(--sub); margin-top:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <div class="logo">M</div>
+    <h1>Menezo</h1>
+    <p>Create · Build · Grow — connect your creator identity</p>
   </div>
 
-  <main class="w-full max-w-md relative z-10">
-    
-    <!-- Header Logo & Branding -->
-    <div class="text-center mb-6">
-      <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-purple-600/30 border border-amber-400/30 p-2.5 mb-3 shadow-lg shadow-amber-500/10">
-        <svg viewBox="0 0 48 48" fill="none" class="w-full h-full">
-          <path d="M24 4L41.3205 14V34L24 44L6.67949 34V14L24 4Z" stroke="#f59e0b" stroke-width="3.5" stroke-linejoin="round"/>
-          <path d="M24 12C17.37 12 12 17.37 12 24C12 30.6 17.37 36 24 36C29.5 36 34 31.8 35.6 26.5" stroke="#f59e0b" stroke-width="3.5"/>
-          <circle cx="24" cy="24" r="3.5" fill="#f59e0b"/>
-        </svg>
+  <div class="card">
+    <div class="quickfill">
+      <div class="quickfill-label">✨ Quick 1-Click Fill</div>
+      <div class="qf-row">
+        <button type="button" class="qf-btn" onclick="fillDemo('Tanu Sharma','@TechWithTanu','YouTube','AI & Tech Tutorials','125K')">Tanu (YouTube 125K)</button>
+        <button type="button" class="qf-btn" onclick="fillDemo('Aarav Mehta','@aarav.builds','Instagram','Startup & Design','84K')">Aarav (IG 84K)</button>
       </div>
-      <h1 class="text-2xl font-extrabold text-white tracking-tight">CreatorOS <span class="text-amber-400">AI</span></h1>
-      <p class="text-xs text-slate-400 mt-1">Connect your Creator Identity & Access Dynamic Dashboard</p>
     </div>
 
-    <!-- Login Form Card -->
-    <div class="glossy-card rounded-3xl p-6 sm:p-8 glow-purple">
-      
-      <!-- Fast Pre-fill Demo buttons -->
-      <div class="mb-5 p-3 rounded-2xl bg-[#141928]/80 border border-white/[0.06]">
-        <div class="text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Quick 1-Click Fill
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <label for="creatorName">Creator Full Name</label>
+      <input type="text" id="creatorName" required placeholder="e.g. Tanu Sharma">
+
+      <label for="channelId">Channel ID / Handle</label>
+      <input type="text" id="channelId" required placeholder="e.g. @TechWithTanu">
+
+      <div class="row2">
+        <div>
+          <label for="platform">Primary Platform</label>
+          <select id="platform">
+            <option>YouTube</option>
+            <option>Instagram</option>
+            <option>TikTok</option>
+            <option>X</option>
+            <option>Facebook</option>
+            <option>LinkedIn</option>
+            <option>Pinterest</option>
+          </select>
         </div>
-        <div class="grid grid-cols-2 gap-2">
-          <button type="button" onclick="fillDemo('Tanu Sharma', '@TechWithTanu', 'YouTube', 'AI & Tech Tutorials', '125K')" class="px-2.5 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-200 text-xs font-semibold transition text-left truncate">
-            ✨ Tanu (YouTube 125K)
-          </button>
-          <button type="button" onclick="fillDemo('Aarav Mehta', '@aarav.builds', 'Instagram', 'Startup & Design', '84K')" class="px-2.5 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 text-indigo-200 text-xs font-semibold transition text-left truncate">
-            📸 Aarav (IG 84K)
-          </button>
+        <div>
+          <label for="niche">Niche</label>
+          <select id="niche">
+            <option>AI & Tech Tutorials</option>
+            <option>Finance & Wealth</option>
+            <option>Coding & Dev</option>
+            <option>Fitness & Wellness</option>
+            <option>Lifestyle & Vlogs</option>
+            <option>Gaming</option>
+          </select>
         </div>
       </div>
 
-      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
-        
-        <!-- Creator Name Input -->
-        <div>
-          <label for="creatorName" class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
-            <span>Creator Full Name</span>
-            <span class="text-[10px] text-purple-400 font-normal">Required</span>
-          </label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-              <i data-lucide="user" class="w-4 h-4"></i>
-            </div>
-            <input 
-              type="text" 
-              id="creatorName" 
-              required
-              placeholder="e.g. Tanu Sharma"
-              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0c0f1a] border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
-            />
-          </div>
-        </div>
+      <label for="followersCount">Current Community Size (Estimate)</label>
+      <input type="text" id="followersCount" value="125K" placeholder="e.g. 125K">
 
-        <!-- Channel ID / Handle Input -->
-        <div>
-          <label for="channelId" class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
-            <span>Channel ID / Handle</span>
-            <span class="text-[10px] text-amber-400 font-normal">e.g. @TechWithTanu or UC...</span>
-          </label>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-              <i data-lucide="at-sign" class="w-4 h-4"></i>
-            </div>
-            <input 
-              type="text" 
-              id="channelId" 
-              required
-              placeholder="e.g. @TechWithTanu"
-              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0c0f1a] border border-white/10 text-white placeholder-slate-500 text-sm font-mono focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
-            />
-          </div>
-        </div>
+      <button type="submit" id="submitBtn" class="submit">Launch My Dashboard</button>
+    </form>
 
-        <!-- Platform & Niche Dropdowns -->
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label for="platform" class="block text-xs font-semibold text-slate-300 mb-1.5">Primary Platform</label>
-            <select 
-              id="platform" 
-              class="w-full px-3 py-2.5 rounded-xl bg-[#0c0f1a] border border-white/10 text-white text-xs focus:outline-none focus:border-purple-400 transition"
-            >
-              <option value="YouTube">YouTube</option>
-              <option value="Instagram">Instagram</option>
-              <option value="X">X (Twitter)</option>
-              <option value="Pinterest">Pinterest</option>
-              <option value="Facebook">Facebook</option>
-              <option value="TikTok">TikTok</option>
-            </select>
-          </div>
+    <p class="note">Your data stays in your browser and syncs with your AI manager.</p>
+  </div>
+</div>
 
-          <div>
-            <label for="niche" class="block text-xs font-semibold text-slate-300 mb-1.5">Niche / Category</label>
-            <select 
-              id="niche" 
-              class="w-full px-3 py-2.5 rounded-xl bg-[#0c0f1a] border border-white/10 text-white text-xs focus:outline-none focus:border-purple-400 transition"
-            >
-              <option value="AI & Tech Tutorials">Tech & AI</option>
-              <option value="Finance & Crypto">Finance & Wealth</option>
-              <option value="Coding & Software">Coding & Dev</option>
-              <option value="Fitness & Health">Fitness & Wellness</option>
-              <option value="Lifestyle & Vlog">Lifestyle & Vlogs</option>
-              <option value="Gaming & Esports">Gaming</option>
-            </select>
-          </div>
-        </div>
+<script>
+  function fillDemo(name, channelId, platform, niche, followers){
+    document.getElementById('creatorName').value = name;
+    document.getElementById('channelId').value = channelId;
+    document.getElementById('platform').value = platform;
+    document.getElementById('niche').value = niche;
+    document.getElementById('followersCount').value = followers;
+  }
 
-        <!-- Follower Count (Optional) -->
-        <div>
-          <label for="followersCount" class="block text-xs font-semibold text-slate-300 mb-1.5">Current Community Size (Estimate)</label>
-          <input 
-            type="text" 
-            id="followersCount" 
-            placeholder="e.g. 125K" 
-            value="125K"
-            class="w-full px-3.5 py-2 rounded-xl bg-[#0c0f1a] border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-amber-400 transition"
-          />
-        </div>
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      const saved = localStorage.getItem('menezo_user');
+      if (saved) {
+        const u = JSON.parse(saved);
+        if (u.name) document.getElementById('creatorName').value = u.name;
+        if (u.channelId) document.getElementById('channelId').value = u.channelId;
+        if (u.platform) document.getElementById('platform').value = u.platform;
+        if (u.niche) document.getElementById('niche').value = u.niche;
+        if (u.followers) document.getElementById('followersCount').value = u.followers;
+      }
+    } catch(e){}
+  });
 
-        <!-- Submit Button -->
-        <button 
-          type="submit" 
-          id="submitBtn"
-          class="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-purple-600 hover:opacity-95 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-[0.98] transition cursor-pointer"
-        >
-          <i data-lucide="zap" class="w-4 h-4 fill-slate-950"></i>
-          <span>Save & Launch Dynamic Dashboard</span>
-        </button>
+  async function handleLogin(e){
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.textContent = 'Connecting...';
 
-      </form>
-
-      <!-- Security Guarantee Note -->
-      <div class="mt-5 pt-4 border-t border-white/[0.06] text-center text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
-        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
-        <span>Data stored locally in browser session & synced with AI Manager</span>
-      </div>
-
-    </div>
-  </main>
-
-  <script>
-    lucide.createIcons();
-
-    function fillDemo(name, channelId, platform, niche, followers) {
-      document.getElementById('creatorName').value = name;
-      document.getElementById('channelId').value = channelId;
-      document.getElementById('platform').value = platform;
-      document.getElementById('niche').value = niche;
-      document.getElementById('followersCount').value = followers;
+    const name = document.getElementById('creatorName').value.trim();
+    let channelId = document.getElementById('channelId').value.trim();
+    if (!channelId.startsWith('@') && !channelId.startsWith('UC') && !channelId.includes('.')) {
+      channelId = '@' + channelId;
     }
+    const platform = document.getElementById('platform').value;
+    const niche = document.getElementById('niche').value;
+    const followers = document.getElementById('followersCount').value.trim() || '0';
 
-    window.addEventListener('DOMContentLoaded', () => {
-      try {
-        const saved = localStorage.getItem('creatorOS_user');
-        if (saved) {
-          const user = JSON.parse(saved);
-          if (user.name) document.getElementById('creatorName').value = user.name;
-          if (user.channelId) document.getElementById('channelId').value = user.channelId;
-          if (user.platform) document.getElementById('platform').value = user.platform;
-          if (user.niche) document.getElementById('niche').value = user.niche;
-          if (user.followers) document.getElementById('followersCount').value = user.followers;
-        }
-      } catch (e) {
-        console.warn('Storage read error', e);
-      }
-    });
+    const userData = { name, channelId, platform, niche, followers, loginTime: new Date().toISOString(), score: 78 };
 
-    async function handleLogin(e) {
-      e.preventDefault();
-      
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span>Connecting Channel ID...</span>';
+    localStorage.setItem('menezo_user', JSON.stringify(userData));
 
-      const name = document.getElementById('creatorName').value.trim();
-      let channelId = document.getElementById('channelId').value.trim();
-      if (!channelId.startsWith('@') && !channelId.startsWith('UC') && !channelId.includes('.')) {
-        channelId = '@' + channelId;
-      }
-      const platform = document.getElementById('platform').value;
-      const niche = document.getElementById('niche').value;
-      const followers = document.getElementById('followersCount').value.trim() || '125K';
+    try {
+      await fetch('/api/login', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(userData)
+      });
+    } catch(err){}
 
-      const userData = {
-        name,
-        channelId,
-        platform,
-        niche,
-        followers,
-        loginTime: new Date().toISOString(),
-        score: 88,
-        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'
-      };
-
-      // 1. Save in localStorage
-      localStorage.setItem('creatorOS_user', JSON.stringify(userData));
-
-      // 2. Sync with backend API
-      try {
-        await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(userData)
-        });
-      } catch (err) {
-        console.log('Direct local storage fallback active');
-      }
-
-      // 3. Open dashboard
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 500);
-    }
-  </script>
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 400);
+  }
+</script>
 </body>
 </html>
