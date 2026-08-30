@@ -30,17 +30,12 @@
   .card{ background:var(--card); border:1px solid var(--line); border-radius:22px; padding:22px;
     box-shadow: 0 20px 60px rgba(0,0,0,.5); backdrop-filter: blur(16px); }
 
-  .quickfill{ background:var(--card2); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:18px; }
-  .quickfill-label{ font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:#c4b5fd; margin-bottom:8px; }
-  .qf-row{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .qf-btn{ background:rgba(124,58,237,.12); border:1px solid rgba(124,58,237,.3); color:#e9d8ff;
-    border-radius:10px; padding:8px 10px; font-size:11.5px; font-weight:600; cursor:pointer; text-align:left; }
-
   label{ display:block; font-size:12px; font-weight:600; color:#cfc9de; margin-bottom:6px; }
   input, select{
     width:100%; background:#0c0916; border:1px solid var(--line); border-radius:12px;
     padding:11px 13px; color:var(--text); font-size:13.5px; margin-bottom:14px;
   }
+  input::placeholder{ color:#5c5570; }
   input:focus, select:focus{ outline:none; border-color:#7c3aed; }
   .row2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
@@ -60,25 +55,21 @@
   </div>
 
   <div class="card">
-    <div class="quickfill">
-      <div class="quickfill-label">✨ Quick 1-Click Fill</div>
-      <div class="qf-row">
-        <button type="button" class="qf-btn" onclick="fillDemo('Tanu Sharma','@TechWithTanu','YouTube','AI & Tech Tutorials','125K')">Tanu (YouTube 125K)</button>
-        <button type="button" class="qf-btn" onclick="fillDemo('Aarav Mehta','@aarav.builds','Instagram','Startup & Design','84K')">Aarav (IG 84K)</button>
-      </div>
-    </div>
-
     <form id="loginForm" onsubmit="handleLogin(event)">
-      <label for="creatorName">Creator Full Name</label>
-      <input type="text" id="creatorName" required placeholder="e.g. Tanu Sharma">
+      <label for="creatorName">Your Full Name</label>
+      <input type="text" id="creatorName" required placeholder="Enter your name" autocomplete="name">
+
+      <label for="creatorEmail">Email</label>
+      <input type="email" id="creatorEmail" required placeholder="Enter your email" autocomplete="email">
 
       <label for="channelId">Channel ID / Handle</label>
-      <input type="text" id="channelId" required placeholder="e.g. @TechWithTanu">
+      <input type="text" id="channelId" required placeholder="e.g. @yourhandle">
 
       <div class="row2">
         <div>
           <label for="platform">Primary Platform</label>
           <select id="platform">
+            <option value="">Select platform</option>
             <option>YouTube</option>
             <option>Instagram</option>
             <option>TikTok</option>
@@ -91,18 +82,20 @@
         <div>
           <label for="niche">Niche</label>
           <select id="niche">
+            <option value="">Select niche</option>
             <option>AI & Tech Tutorials</option>
             <option>Finance & Wealth</option>
             <option>Coding & Dev</option>
             <option>Fitness & Wellness</option>
             <option>Lifestyle & Vlogs</option>
             <option>Gaming</option>
+            <option>Other</option>
           </select>
         </div>
       </div>
 
       <label for="followersCount">Current Community Size (Estimate)</label>
-      <input type="text" id="followersCount" value="125K" placeholder="e.g. 125K">
+      <input type="text" id="followersCount" placeholder="e.g. 5K, leave blank if just starting">
 
       <button type="submit" id="submitBtn" class="submit">Launch My Dashboard</button>
     </form>
@@ -112,43 +105,22 @@
 </div>
 
 <script>
-  function fillDemo(name, channelId, platform, niche, followers){
-    document.getElementById('creatorName').value = name;
-    document.getElementById('channelId').value = channelId;
-    document.getElementById('platform').value = platform;
-    document.getElementById('niche').value = niche;
-    document.getElementById('followersCount').value = followers;
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    try {
-      const saved = localStorage.getItem('menezo_user');
-      if (saved) {
-        const u = JSON.parse(saved);
-        if (u.name) document.getElementById('creatorName').value = u.name;
-        if (u.channelId) document.getElementById('channelId').value = u.channelId;
-        if (u.platform) document.getElementById('platform').value = u.platform;
-        if (u.niche) document.getElementById('niche').value = u.niche;
-        if (u.followers) document.getElementById('followersCount').value = u.followers;
-      }
-    } catch(e){}
-  });
-
   async function handleLogin(e){
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
     btn.disabled = true; btn.textContent = 'Connecting...';
 
     const name = document.getElementById('creatorName').value.trim();
+    const email = document.getElementById('creatorEmail').value.trim();
     let channelId = document.getElementById('channelId').value.trim();
     if (!channelId.startsWith('@') && !channelId.startsWith('UC') && !channelId.includes('.')) {
       channelId = '@' + channelId;
     }
-    const platform = document.getElementById('platform').value;
-    const niche = document.getElementById('niche').value;
+    const platform = document.getElementById('platform').value || 'YouTube';
+    const niche = document.getElementById('niche').value || 'General';
     const followers = document.getElementById('followersCount').value.trim() || '0';
 
-    const userData = { name, channelId, platform, niche, followers, loginTime: new Date().toISOString(), score: 78 };
+    const userData = { name, email, channelId, platform, niche, followers, loginTime: new Date().toISOString(), score: 50 };
 
     localStorage.setItem('menezo_user', JSON.stringify(userData));
 
