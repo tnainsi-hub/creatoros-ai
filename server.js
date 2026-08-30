@@ -8,22 +8,20 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// Current folder ke static files serve karega
 app.use(express.static(__dirname));
 
 // Initialize Gemini Client
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 // MongoDB Connection
-const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/menezo';
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
 if (MONGO_URI) {
   mongoose.connect(MONGO_URI)
-    .then(() => console.log('MongoDB Connected successfully'))
-    .catch(err => console.log('MongoDB connection warning:', err.message));
+    .then(() => console.log('✅ MongoDB Connected successfully'))
+    .catch(err => console.log('MongoDB Warning:', err.message));
 }
 
-// 1. AI Studio API (Gemini Flash 2.5)
+// AI Studio API Route
 app.post('/api/ai/generate', async (req, res) => {
   try {
     const { prompt, type, language } = req.body;
@@ -36,7 +34,7 @@ Task: ${type || 'Content Generation'}
 Language: ${language || 'English'}
 Prompt: ${prompt}
 
-Format response in structured clean Markdown:
+Format the response in clean Markdown with:
 - 🎯 Hook (First 3 seconds)
 - 📝 Script / Body
 - 🎬 Visual & B-Roll Suggestions
@@ -47,14 +45,14 @@ Format response in structured clean Markdown:
     res.json({ success: true, text: response.text });
   } catch (error) {
     console.error('AI Error:', error);
-    res.status(500).json({ success: false, error: error.message || 'AI Generation Failed' });
+    res.status(500).json({ success: false, error: error.message || 'AI generation failed' });
   }
 });
 
-// Fallback: Koi bhi route ho, index.html hi load hoga (Crash Proof)
+// Single Page Fallback (No 404 Crash)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Menezo live on port ${PORT}`));
