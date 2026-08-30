@@ -1,42 +1,341 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menezo — AI Creator Manager</title>
-  <meta name="description" content="Menezo is an AI-powered manager for content creators — plan content, generate scripts and captions, and grow across every platform.">
-  <style>
-    body {
-      background:#08090d; color:#f1f5f9; font-family: sans-serif;
-      display:flex; align-items:center; justify-content:center; height:100vh; margin:0;
-    }
-    .loader { text-align:center; }
-    .spinner {
-      width:34px; height:34px; border:3px solid rgba(245,158,11,0.2);
-      border-top-color:#f59e0b; border-radius:50%;
-      animation: spin 0.8s linear infinite; margin:0 auto 12px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    p { font-size:13px; color:#94a3b8; }
-  </style>
-</head>
-<body>
-  <div class="loader">
-    <div class="spinner"></div>
-    <p>Loading Menezo...</p>
-  </div>
-
+  <title>Menezo — Creator Operating System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
-    try {
-      const saved = localStorage.getItem('menezo_user');
-      if (saved) {
-        window.location.href = 'dashboard.html';
-      } else {
-        window.location.href = 'login.html';
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#080A10',
+              card: '#121622',
+              border: '#1E2435',
+              purple: '#8B5CF6',
+              accent: '#EC4899'
+            }
+          }
+        }
       }
-    } catch (e) {
-      window.location.href = 'login.html';
     }
   </script>
-</body>
-</html>
+  <style>
+    body { background-color: #080A10; color: #F3F4F6; font-family: system-ui, -apple-system, sans-serif; }
+    .glass-card { background: rgba(18, 22, 34, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .pulse-glow { animation: pulseGlow 3s infinite alternate; }
+    @keyframes pulseGlow {
+      from { box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); }
+      to { box-shadow: 0 0 30px rgba(236, 72, 153, 0.3); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row antialiased select-none">
+
+  <!-- ================= DESKTOP SIDEBAR ================= -->
+  <aside class="hidden md:flex flex-col w-64 border-r border-brand-border bg-[#0B0E17] p-5 justify-between flex-shrink-0">
+    <div class="space-y-6">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center font-black text-white shadow-lg shadow-purple-500/30">M</div>
+        <div>
+          <h1 class="font-bold text-lg leading-none">Menezo</h1>
+          <span class="text-[10px] text-gray-500 tracking-wider">Create • Build • Grow</span>
+        </div>
+      </div>
+
+      <!-- Main Link -->
+      <button class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl px-4 py-2.5 flex items-center space-x-3 text-white font-semibold shadow-lg shadow-purple-500/20">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+        <span class="text-sm">Dashboard</span>
+      </button>
+
+      <!-- Navigation Links -->
+      <nav class="space-y-1 text-sm text-gray-400">
+        <a href="#platforms" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white transition">
+          <div class="flex items-center space-x-3"><i data-lucide="grid" class="w-4 h-4"></i><span>Platforms</span></div>
+        </a>
+        <a href="#ai-studio" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white transition">
+          <div class="flex items-center space-x-3"><i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i><span>AI Studio</span></div>
+          <span class="px-1.5 py-0.5 text-[9px] bg-purple-500/20 text-purple-300 rounded font-bold">New</span>
+        </a>
+        <a href="#script-lab" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white transition">
+          <div class="flex items-center space-x-3"><i data-lucide="file-text" class="w-4 h-4"></i><span>Script Lab</span></div>
+        </a>
+        <a href="#inspiration-radar" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white transition">
+          <div class="flex items-center space-x-3"><i data-lucide="compass" class="w-4 h-4 text-pink-400"></i><span>Inspiration Radar</span></div>
+          <span class="px-1.5 py-0.5 text-[9px] bg-pink-500/20 text-pink-300 rounded font-bold">New</span>
+        </a>
+        <a href="#planner" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white transition">
+          <i data-lucide="calendar" class="w-4 h-4"></i><span>Content Planner</span>
+        </a>
+        <a href="#analytics" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white transition">
+          <i data-lucide="bar-chart-2" class="w-4 h-4"></i><span>Analytics</span>
+        </a>
+        <a href="#inbox" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white transition">
+          <div class="flex items-center space-x-3"><i data-lucide="mail" class="w-4 h-4"></i><span>Inbox</span></div>
+          <span class="px-1.5 py-0.2 text-[10px] bg-white/10 rounded-full font-bold">23</span>
+        </a>
+        <a href="#projects" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white transition">
+          <i data-lucide="folder" class="w-4 h-4"></i><span>Projects</span>
+        </a>
+        <a href="#invoices" class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5 hover:text-white transition">
+          <div class="flex items-center space-x-3"><i data-lucide="receipt" class="w-4 h-4"></i><span>Invoices</span></div>
+          <span class="px-1.5 py-0.5 text-[9px] bg-cyan-500/20 text-cyan-300 rounded font-bold">New</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Pro Upgrade Banner -->
+    <div class="glass-card rounded-2xl p-4 border border-purple-500/30 text-left relative overflow-hidden mt-6">
+      <div class="flex items-center space-x-1 text-amber-400 font-bold text-xs uppercase mb-1">
+        <i data-lucide="crown" class="w-4 h-4"></i><span>Menezo Pro</span>
+      </div>
+      <p class="text-[11px] text-gray-400 mb-3 leading-snug">Unlock all premium features and grow faster.</p>
+      <ul class="text-[10px] text-gray-300 space-y-1 mb-3">
+        <li class="flex items-center gap-1.5">✓ Unlimited AI Credits</li>
+        <li class="flex items-center gap-1.5">✓ Advanced Analytics</li>
+        <li class="flex items-center gap-1.5">✓ Team Collaboration</li>
+      </ul>
+      <button class="w-full py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white shadow-lg shadow-pink-500/20">Upgrade to Pro →</button>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN CONTENT AREA ================= -->
+  <main class="flex-1 flex flex-col min-w-0 pb-20 md:pb-6">
+    
+    <!-- Top Header -->
+    <header class="h-16 border-b border-brand-border flex items-center justify-between px-6 bg-[#0B0E17]/80 backdrop-blur sticky top-0 z-30">
+      <div class="relative w-full max-w-md hidden sm:block">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-gray-400"></i>
+        <input type="text" placeholder="Search tools, projects, scripts... (⌘K)" class="w-full bg-[#131622] border border-brand-border rounded-xl pl-9 pr-4 py-1.5 text-sm focus:outline-none focus:border-purple-500 text-gray-200">
+      </div>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center space-x-3 sm:space-x-4">
+        <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
+          <i data-lucide="crown" class="w-3.5 h-3.5"></i> Pro Plan
+        </span>
+
+        <!-- AI Credit Counter Pill -->
+        <div class="px-3 py-1 bg-white/5 border border-white/10 rounded-xl text-xs font-medium text-purple-300">
+          [ <span class="font-bold text-white">45</span> / 50 AI Credits ]
+        </div>
+
+        <button class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 relative">
+          <i data-lucide="bell" class="w-4 h-4"></i>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-pink-500 rounded-full"></span>
+        </button>
+
+        <div class="flex items-center space-x-2.5 border-l border-brand-border pl-3">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 p-[2px]">
+            <div class="w-full h-full bg-black rounded-full flex items-center justify-center text-xs font-bold text-white">T</div>
+          </div>
+          <div class="hidden lg:block leading-tight text-left">
+            <span class="block text-xs font-semibold">Tanu</span>
+            <span class="block text-[10px] text-gray-400">Creator</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Content Body -->
+    <div class="p-4 sm:p-6 space-y-6 max-w-7xl w-full mx-auto">
+      
+      <!-- Greeting Banner -->
+      <div class="glass-card rounded-2xl p-5 sm:p-6 relative overflow-hidden bg-gradient-to-r from-purple-950/40 via-brand-card to-brand-card">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+          <div class="space-y-1">
+            <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2">Good Evening, Tanu! <span>👋</span></h2>
+            <p class="text-xs sm:text-sm text-gray-400">Here's what's happening with your content today.</p>
+            
+            <!-- Banner Stats Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-2">
+              <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                <span class="text-[11px] text-gray-400">Total Followers</span>
+                <p class="text-lg sm:text-xl font-bold mt-0.5">125K <span class="text-xs text-emerald-400 font-normal">↑ 12%</span></p>
+              </div>
+              <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                <span class="text-[11px] text-gray-400">Total Views</span>
+                <p class="text-lg sm:text-xl font-bold mt-0.5">8.7M <span class="text-xs text-emerald-400 font-normal">↑ 18%</span></p>
+              </div>
+              <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                <span class="text-[11px] text-gray-400">Engagement</span>
+                <p class="text-lg sm:text-xl font-bold mt-0.5">8.3% <span class="text-xs text-emerald-400 font-normal">↑ 9%</span></p>
+              </div>
+              <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                <span class="text-[11px] text-gray-400">Daily Goal</span>
+                <p class="text-lg sm:text-xl font-bold mt-0.5 text-purple-400">75% <span class="text-[10px] text-gray-400 font-normal">Keep going!</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Main Sections: Today's Focus, Inspiration Radar, Creator Wellness -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        
+        <!-- 1. Today's Focus -->
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <h4 class="font-semibold text-sm">Today's Focus</h4>
+              <span class="text-xs text-purple-400 hover:underline cursor-pointer">View All</span>
+            </div>
+            <div class="space-y-2.5 text-xs">
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <div class="flex items-center space-x-2.5">
+                  <i data-lucide="youtube" class="w-4 h-4 text-red-500"></i>
+                  <span>Finish YouTube Script</span>
+                </div>
+                <span class="text-gray-400">11:00 AM</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <div class="flex items-center space-x-2.5">
+                  <i data-lucide="instagram" class="w-4 h-4 text-pink-500"></i>
+                  <span>Edit Instagram Reels</span>
+                </div>
+                <span class="text-gray-400">01:30 PM</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <div class="flex items-center space-x-2.5">
+                  <i data-lucide="youtube" class="w-4 h-4 text-red-500"></i>
+                  <span>Upload YouTube Video</span>
+                </div>
+                <span class="text-gray-400">07:30 PM</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/5">
+                <div class="flex items-center space-x-2.5">
+                  <i data-lucide="message-square" class="w-4 h-4 text-cyan-400"></i>
+                  <span>Reply to Comments</span>
+                </div>
+                <span class="text-gray-400">08:00 PM</span>
+              </div>
+            </div>
+          </div>
+          <button class="w-full mt-4 py-2 border border-dashed border-brand-border rounded-xl text-xs text-purple-400 hover:bg-purple-500/10 flex items-center justify-center gap-1.5 transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add New Task
+          </button>
+        </div>
+
+        <!-- 2. Inspiration Radar -->
+        <div class="glass-card p-5 rounded-2xl">
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="font-semibold text-sm flex items-center gap-1.5"><i data-lucide="compass" class="w-4 h-4 text-pink-400"></i> Inspiration Radar</h4>
+            <span class="text-xs text-purple-400 hover:underline cursor-pointer">View All</span>
+          </div>
+          <p class="text-[11px] text-gray-400 mb-3">Trending content angles in your niche ✨</p>
+          <div class="space-y-2 text-xs">
+            <div class="p-2.5 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+              <span class="truncate pr-2">↗ Emotional storytelling with a twist</span>
+              <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[10px] whitespace-nowrap">High Opportunity</span>
+            </div>
+            <div class="p-2.5 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+              <span class="truncate pr-2">↗ Day in the life – BTS edition</span>
+              <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px] whitespace-nowrap">Rising</span>
+            </div>
+            <div class="p-2.5 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+              <span class="truncate pr-2">↗ Behind the scenes is winning</span>
+              <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[10px] whitespace-nowrap">High Opportunity</span>
+            </div>
+            <div class="p-2.5 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+              <span class="truncate pr-2">↗ Relatable struggles for young creators</span>
+              <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px] whitespace-nowrap">Rising</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Creator Wellness Card -->
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between items-center text-center">
+          <div class="w-full flex justify-between items-center mb-2">
+            <h4 class="font-semibold text-sm flex items-center gap-1.5"><i data-lucide="heart" class="w-4 h-4 text-purple-400"></i> Creator Wellness</h4>
+          </div>
+          
+          <div class="my-3 flex flex-col items-center">
+            <!-- Glowing Coffee Cup Icon Container -->
+            <div class="w-20 h-20 rounded-full border-2 border-purple-500/40 flex items-center justify-center bg-purple-950/30 pulse-glow mb-3">
+              <i data-lucide="coffee" class="w-8 h-8 text-pink-400"></i>
+            </div>
+            <span class="text-xs text-gray-400">Focused for</span>
+            <span class="text-xl font-bold text-white">2.5 hrs.</span>
+            <p class="text-[11px] text-gray-400 mt-1">Take a 10-min recharge break! ☕</p>
+          </div>
+
+          <button id="breakBtn" onclick="startBreakAlert()" class="w-full py-2 bg-white/5 hover:bg-purple-500/20 border border-purple-500/30 rounded-xl text-xs font-semibold text-purple-300 transition">
+            Start Break Timer
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Quick Actions Bar -->
+      <div class="glass-card p-5 rounded-2xl">
+        <h4 class="font-semibold text-sm mb-3">Quick Actions</h4>
+        <div class="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
+          <button class="flex flex-col items-center p-3 rounded-xl bg-white/5 hover:bg-purple-500/10 border border-white/5 transition">
+            <i data-lucide="folder-plus" class="w-5 h-5 text-purple-400 mb-1"></i>
+            <span class="text-[11px]">New Project</span>
+          </button>
+          <button onclick="openAIModal()" class="flex flex-col items-center p-3 rounded-xl bg-white/5 hover:bg-purple-500/10 border border-white/5 transition">
+            <i data-lucide="sparkles" class="w-5 h-5 text-pink-400 mb-1"></i>
+            <span class="text-[11px]">AI Writer</span>
+          </button>
+          <button class="flex flex-col items-center p-3 rounded-xl bg-white/5 hover:bg-purple-500/10 border border-white/5 transition">
+            <i data-lucide="image" class="w-5 h-5 text-amber-400 mb-1"></i>
+            <span class="text-[11px]">Thumbnail Lab</span>
+          </button>
+          <button class="flex flex-col items-center p-3 rounded-xl bg-white/5 hover:bg-purple-500/10 border border-white/5 transition">
+            <i data-lucide="search" class="w-5 h-5 text-emerald-400 mb-1"></i>
+            <span class="text-[11px]">SEO Checker</span>
+          </button>
+          <button class="flex flex-col items-center p-3 rounded-xl bg-white/5 hover:bg-purple-500/10 border border-white/5 transition">
+            <i data-lucide="target" class="w-5 h-5 text-cyan-400 mb-1"></i>
+            <span class="text-[11px]">Trend Radar</span>
+          </button>
+          <button class="flex flex-col items-center p-3 rounded-xl bg-white/5 hover:bg-purple-500/10 border border-white/5 transition">
+            <i data-lucide="calendar" class="w-5 h-5 text-indigo-400 mb-1"></i>
+            <span class="text-[11px]">Schedule Post</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= MOBILE BOTTOM NAVIGATION ================= -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#0B0E17]/95 border-t border-brand-border flex items-center justify-around px-2 z-40 backdrop-blur">
+    <button class="flex flex-col items-center text-purple-400 text-[10px]">
+      <i data-lucide="home" class="w-5 h-5"></i>
+      <span>Home</span>
+    </button>
+    <button class="flex flex-col items-center text-gray-400 hover:text-white text-[10px]">
+      <i data-lucide="grid" class="w-5 h-5"></i>
+      <span>Platforms</span>
+    </button>
+    <button onclick="openAIModal()" class="w-11 h-11 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 text-white flex items-center justify-center shadow-lg -mt-5">
+      <i data-lucide="plus" class="w-6 h-6"></i>
+    </button>
+    <button onclick="openAIModal()" class="flex flex-col items-center text-gray-400 hover:text-white text-[10px]">
+      <i data-lucide="sparkles" class="w-5 h-5"></i>
+      <span>AI Studio</span>
+    </button>
+    <button class="flex flex-col items-center text-gray-400 hover:text-white text-[10px]">
+      <i data-lucide="folder" class="w-5 h-5"></i>
+      <span>Projects</span>
+    </button>
+  </nav>
+
+  <!-- ================= AI GENERATOR MODAL POPUP ================= -->
+  <div id="aiModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-lg w-full rounded-2xl p-6 border border-purple-500/30 space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-base flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5 text-purple-400"></i> Menezo AI Studio</h3>
+        <button onclick="closeAIModal()" class="text-gray-400 hover:text-white text-lg font-bold">&times;</button>
+      </div>
+
+      <div>
+        <label class="block text-xs
